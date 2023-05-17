@@ -1,0 +1,30 @@
+{
+  "name": "gadget-server",
+  "version": "1.47.0",
+  "files": [
+    "dist/**/*"
+  ],
+  "types": "dist/index.d.ts",
+  "private": true,
+  "main": "dist/index.js",
+  "dependencies": {
+    "fastify": "^3.29.0",
+    "@gadget-client/seasonify": "link:../client",
+    "@gadgetinc/api-client-core": "0.13.9",
+    "@types/node": "^16.11.7",
+    "@types/lodash.isequal": "*",
+    "@types/lodash.clonedeep": "*",
+    "lodash.isequal": "^4.5.0",
+    "lodash.clonedeep": "^4.5.0",
+    "shopify-api-node": "*"
+  },
+  "devDependencies": {
+    "typescript": "4.5.5"
+  },
+  "scripts": {},
+  "gadget": {
+    "applicationName": "Seasonify",
+    "environmentName": "Development",
+    "environmentVersion": "47"
+  }
+}
