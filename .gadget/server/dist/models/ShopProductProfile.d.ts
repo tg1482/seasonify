@@ -16,6 +16,7 @@ export declare type DefaultShopProductProfileServerSelection = {
     readonly active: true;
     readonly startDate: true;
     readonly endDate: true;
+    readonly body: true;
 };
 /** All the data passed to an effect or precondition within the `create` action on the `shopProductProfile` model. */
 export interface CreateShopProductProfileActionContext extends AmbientContext {

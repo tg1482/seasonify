@@ -393,6 +393,9 @@ export interface ShopProductProfileSort {
 
   /** Sort the results by the endDate field. Defaults to ascending (smallest value first). */
   endDate?: SortOrder | null;
+
+  /** Sort the results by the body field. Defaults to ascending (smallest value first). */
+  body?: SortOrder | null;
 };
 
 
@@ -424,6 +427,8 @@ export interface ShopProductProfileFilter {
   startDate?: DateFilter | null;
 
   endDate?: DateFilter | null;
+
+  body?: StringFilter | null;
 };
 
 
@@ -1047,6 +1052,8 @@ export interface NestedShopProductProfileCreateInput {
   startDate?: Date | Scalars['ISO8601DateString'] | null;
 
   endDate?: Date | Scalars['ISO8601DateString'] | null;
+
+  body?: (Scalars['String'] | null) | null;
 };
 
 
@@ -1132,6 +1139,8 @@ export interface NestedShopProductProfileUpdateInput {
 
   endDate?: Date | Scalars['ISO8601DateString'] | null;
 
+  body?: (Scalars['String'] | null) | null;
+
   id: (Scalars['GadgetID'] | null);
 };
 
@@ -1172,6 +1181,8 @@ export interface ConvergeShopProductProfileValues {
   startDate?: Date | Scalars['ISO8601DateString'] | null;
 
   endDate?: Date | Scalars['ISO8601DateString'] | null;
+
+  body?: (Scalars['String'] | null) | null;
 };
 
 
@@ -1222,6 +1233,8 @@ export interface CreateShopProductProfileInput {
   startDate?: Date | Scalars['ISO8601DateString'] | null;
 
   endDate?: Date | Scalars['ISO8601DateString'] | null;
+
+  body?: (Scalars['String'] | null) | null;
 };
 
 
@@ -1241,6 +1254,8 @@ export interface UpdateShopProductProfileInput {
   startDate?: Date | Scalars['ISO8601DateString'] | null;
 
   endDate?: Date | Scalars['ISO8601DateString'] | null;
+
+  body?: (Scalars['String'] | null) | null;
 };
 
 
@@ -1622,6 +1637,8 @@ export interface InternalShopProductProfileInput {
   startDate?: Date | Scalars['ISO8601DateString'] | null;
 
   endDate?: Date | Scalars['ISO8601DateString'] | null;
+
+  body?: (Scalars['String'] | null) | null;
 };
 
 
@@ -3179,6 +3196,8 @@ export interface ShopProductProfile {
 
   endDate: (Scalars['Date'] | null);
 
+  body: (Scalars['String'] | null);
+
   /** Get all the fields for this record. Useful for not having to list out all the fields you want to retrieve, but slower. */
   _all: Scalars['JSONObject'];
 };
@@ -3217,6 +3236,8 @@ export type AvailableShopProductProfileSelection = {
   startDate?: boolean | null | undefined;
 
   endDate?: boolean | null | undefined;
+
+  body?: boolean | null | undefined;
 
   /** Get all the fields for this record. Useful for not having to list out all the fields you want to retrieve, but slower. */
   _all?: boolean | null | undefined;

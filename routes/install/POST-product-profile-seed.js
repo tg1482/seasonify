@@ -11,13 +11,14 @@ module.exports = async ({ request, reply, api, logger, connections, params }) =>
       logger.info(`Product ID: ${product.id}`);
       logger.info(`Season ID: ${season.id}`);
       const dummyRecord = {
-        shop: { _link: shopId },
         profileName: `${season.name} - ${product.title}`,
-        product: { _link: product.id },
-        season: { _link: season.id },
         active: false,
         startDate: season.startDate,
         endDate: season.endDate,
+        body: product.body || "",
+        product: { _link: product.id },
+        season: { _link: season.id },
+        shop: { _link: shopId },
       };
 
       logger.info(`Creating dummy: ${dummyRecord}`);

@@ -208,6 +208,8 @@ export interface ShopProductProfileSort {
     startDate?: SortOrder | null;
     /** Sort the results by the endDate field. Defaults to ascending (smallest value first). */
     endDate?: SortOrder | null;
+    /** Sort the results by the body field. Defaults to ascending (smallest value first). */
+    body?: SortOrder | null;
 }
 export interface ShopProductProfileFilter {
     AND?: (ShopProductProfileFilter | null)[];
@@ -223,6 +225,7 @@ export interface ShopProductProfileFilter {
     active?: BooleanFilter | null;
     startDate?: DateFilter | null;
     endDate?: DateFilter | null;
+    body?: StringFilter | null;
 }
 export interface DateFilter {
     equals?: Date | Scalars['ISO8601DateString'] | null;
@@ -571,6 +574,7 @@ export interface NestedShopProductProfileCreateInput {
     active?: (Scalars['Boolean'] | null) | null;
     startDate?: Date | Scalars['ISO8601DateString'] | null;
     endDate?: Date | Scalars['ISO8601DateString'] | null;
+    body?: (Scalars['String'] | null) | null;
 }
 export interface ShopifyProductBelongsToInput {
     /** Existing ID of another record, which you would like to associate this record with */
@@ -611,6 +615,7 @@ export interface NestedShopProductProfileUpdateInput {
     active?: (Scalars['Boolean'] | null) | null;
     startDate?: Date | Scalars['ISO8601DateString'] | null;
     endDate?: Date | Scalars['ISO8601DateString'] | null;
+    body?: (Scalars['String'] | null) | null;
     id: (Scalars['GadgetID'] | null);
 }
 export interface NestedShopProductProfileDeleteInput {
@@ -631,6 +636,7 @@ export interface ConvergeShopProductProfileValues {
     active?: (Scalars['Boolean'] | null) | null;
     startDate?: Date | Scalars['ISO8601DateString'] | null;
     endDate?: Date | Scalars['ISO8601DateString'] | null;
+    body?: (Scalars['String'] | null) | null;
 }
 export interface ConvergeActionMap {
     /** One of the model action's API identifiers. Specifies which action to use to create new records that are in the set of specified records but not yet in the database. Defaults to the action named `create` if it exists. */
@@ -656,6 +662,7 @@ export interface CreateShopProductProfileInput {
     active?: (Scalars['Boolean'] | null) | null;
     startDate?: Date | Scalars['ISO8601DateString'] | null;
     endDate?: Date | Scalars['ISO8601DateString'] | null;
+    body?: (Scalars['String'] | null) | null;
 }
 export interface UpdateShopProductProfileInput {
     product?: ShopifyProductBelongsToInput | null;
@@ -665,6 +672,7 @@ export interface UpdateShopProductProfileInput {
     active?: (Scalars['Boolean'] | null) | null;
     startDate?: Date | Scalars['ISO8601DateString'] | null;
     endDate?: Date | Scalars['ISO8601DateString'] | null;
+    body?: (Scalars['String'] | null) | null;
 }
 export interface InternalSessionInput {
     state?: (Scalars['RecordState'] | null) | null;
@@ -855,6 +863,7 @@ export interface InternalShopProductProfileInput {
     active?: (Scalars['Boolean'] | null) | null;
     startDate?: Date | Scalars['ISO8601DateString'] | null;
     endDate?: Date | Scalars['ISO8601DateString'] | null;
+    body?: (Scalars['String'] | null) | null;
 }
 /** All built-in and custom scalars, mapped to their actual values */
 export interface Scalars {
@@ -1698,6 +1707,7 @@ export interface ShopProductProfile {
     active: Scalars['Boolean'];
     startDate: (Scalars['Date'] | null);
     endDate: (Scalars['Date'] | null);
+    body: (Scalars['String'] | null);
     /** Get all the fields for this record. Useful for not having to list out all the fields you want to retrieve, but slower. */
     _all: Scalars['JSONObject'];
 }
@@ -1719,6 +1729,7 @@ export declare type AvailableShopProductProfileSelection = {
     active?: boolean | null | undefined;
     startDate?: boolean | null | undefined;
     endDate?: boolean | null | undefined;
+    body?: boolean | null | undefined;
     /** Get all the fields for this record. Useful for not having to list out all the fields you want to retrieve, but slower. */
     _all?: boolean | null | undefined;
 };

@@ -35,29 +35,36 @@ const gadgetMetaQuery = `
   }
 `;
 
-const productsQuery = `
+const combinedProductQuery = `
   query {
-    shopifyProducts {
+    shopProductProfiles(first: 200){
       edges {
         node {
           id
-          title
+          profileName
+          active
           body
-          updatedAt
-        }
-      }
-    }
-  }
-`;
-
-const productImagesQuery = `
-  query {
-    shopifyProductImages {
-      edges {
-        node {
-          id
-          source
-          updatedAt
+          shop {
+            id
+          }
+          product {
+            id
+            title
+            updatedAt
+            images {
+              edges {
+                node {
+                  id
+                  source
+                }
+              }
+            }
+          }
+          season {
+            name
+            startDate
+            endDate
+          }
         }
       }
     }
@@ -68,130 +75,24 @@ const ProductPage = () => {
   const [{ data: metaData, fetching: fetchingGadgetMeta }] = useQuery({
     query: gadgetMetaQuery,
   });
-  const [{ data: productsData, fetching: fetchingProducts, error: productsError }] = useQuery({
-    query: productsQuery,
-  });
-  const [{ data: productImagesData, fetching: fetchingProductImages, error: productImagesError }] = useQuery({
-    query: productImagesQuery,
+
+  const [{ data: combinedData, fetching: fetchingCombinedData, error: combinedError }] = useQuery({
+    query: combinedProductQuery,
   });
 
-  const renderProductList = () => {
-    const { edges: productEdges } = productsData.shopifyProducts;
-    const { edges: imageEdges } = productImagesData.shopifyProductImages;
+  const [currentTab, setTab] = useState(0);
 
-    const products = productEdges.map((product, index) => {
-      const {
-        node: { id, title, body, updatedAt },
-      } = product;
-      const {
-        node: { source: imageURL },
-      } = imageEdges[index];
-
-      // calculate days since last update
-      const daysSinceLastUpdate = Math.floor((new Date() - new Date(updatedAt)) / (1000 * 60 * 60 * 24));
-
-      return {
-        image: <Image source={imageURL} alt={id} style={{ width: "100px", height: "100px" }} />,
-        id,
-        title,
-        body,
-        daysSinceLastUpdate,
-      };
-    });
-
-    const Tab = ({ children, currentTab, setTab, index }) => {
-      return (
-        <div
-          onClick={() => setTab(index)}
-          className={`px-4 py-2 cursor-pointer rounded ${currentTab === index ? "bg-blue-400 text-white" : "bg-white text-blue-500"}`}
-        >
-          {children}
-        </div>
-      );
-    };
-
-    const itemTemplate = (product) => {
-      const [tabs, setTabs] = useState([
-        { title: "Current Body", content: product.body },
-        { title: "Tab 2", content: "" },
-        { title: "Tab 3", content: "" },
-        { title: "Tab 4", content: "" },
-      ]);
-
-      const [currentTab, setTab] = useState(0);
-
-      const updateTabContent = (index, newContent) => {
-        setTabs((prevTabs) => prevTabs.map((tab, tabIndex) => (tabIndex === index ? { ...tab, content: newContent } : tab)));
-      };
-
-      return (
-        <div className="grid grid-cols-10 gap-2 overflow-x-auto p-4 rounded-xl border-2 border-gray-200 bg-white shadow-lg">
-          <div className="col-span-1 flex flex-col items-center justify-center">{product.image}</div>
-          <div className="col-span-2 flex flex-col items-start justify-center gap-2">
-            <div className="text-md font-bold text-900">{product.title}</div>
-            <div>Updated {product.daysSinceLastUpdate} day(s) ago</div>
-          </div>
-          <div className="col-span-6 flex flex-col items-center justify-center gap-2">
-            <div className="flex">
-              {tabs.map((tab, index) => (
-                <Tab key={tab.title} currentTab={currentTab} setTab={setTab} index={index}>
-                  {tab.title}
-                </Tab>
-              ))}
-            </div>
-            <div className="flex flex-col w-full">
-              <InputTextarea
-                value={tabs[currentTab].content}
-                onChange={(e) => updateTabContent(currentTab, e.target.value)}
-                disabled={currentTab === 0}
-                autoResize
-              />
-              <div className="flex justify-end gap-2 mt-2">
-                <button className="px-4 py-2 text-white bg-blue-500 rounded">Save</button>
-                <button className="px-4 py-2 text-white bg-green-500 rounded">Generate</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    };
-
-    const header = (
-      <div className="p-d-flex p-ai-center p-jc-between">
-        <h3 className="p-m-0">Product List</h3>
-        <span className="p-input-icon-left">
-          <i className="pi pi-search" />
-          <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Global Search" />
-        </span>
-      </div>
-    );
-
-    return (
-      <DataView
-        value={products}
-        layout="list"
-        header={header}
-        itemTemplate={itemTemplate}
-        paginator
-        rows={10}
-        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-        // rowsPerPageOptions={[10, 20, 50]}
-      />
-    );
-  };
-
-  if (productsError || productImagesError) {
+  if (combinedError) {
     return (
       <Page title="Error">
         <Text variant="bodyMd" as="p">
-          Error: {productsError || productImagesError}
+          Error: {combinedError.message}
         </Text>
       </Page>
     );
   }
 
-  if (fetchingGadgetMeta || fetchingProducts || fetchingProductImages) {
+  if (fetchingCombinedData) {
     return (
       <div
         style={{
@@ -207,10 +108,150 @@ const ProductPage = () => {
     );
   }
 
+  if (!combinedData) return null;
+
+  const { edges: profileEdges } = combinedData.shopProductProfiles;
+
+  const productProfiles = profileEdges.reduce((acc, edge) => {
+    // Create a new profile without the product information
+    const { product, ...profile } = edge.node;
+
+    // Use the first image for the product
+    const imageURL = product.images.edges.length > 0 ? product.images.edges[0].node.source : null;
+
+    // If the product already exists in the accumulator, just append the profile
+    if (acc[product.id]) {
+      acc[product.id].profiles.push(profile);
+    } else {
+      // Otherwise, create a new entry in the accumulator for the product
+      acc[product.id] = {
+        ...product,
+        imageURL,
+        profiles: [profile],
+      };
+    }
+
+    return acc;
+  }, {});
+
+  const products = Object.values(productProfiles).map((productData, index) => {
+    const { id, title, updatedAt, profiles, imageURL } = productData;
+
+    // calculate days since last update
+    const daysSinceLastUpdate = Math.floor((new Date() - new Date(updatedAt)) / (1000 * 60 * 60 * 24));
+
+    return {
+      image: <Image source={imageURL} alt={id} style={{ width: "100px", height: "100px" }} />,
+      id,
+      title,
+      daysSinceLastUpdate,
+      profiles,
+    };
+  });
+
+  const Tab = ({ children, currentTab, setTab, index }) => {
+    return (
+      <div
+        onClick={() => setTab(index)}
+        className={`px-4 py-2 cursor-pointer rounded ${currentTab === index ? "bg-blue-400 text-white" : "bg-white text-blue-500"}`}
+      >
+        {children}
+      </div>
+    );
+  };
+
+  const itemTemplate = (product) => {
+    const [currentTab, setTab] = useState(0);
+    const tabs = product.profiles.map((profile, index) => ({
+      title: profile.season.name,
+      content: profile.body,
+      id: profile.id,
+    }));
+    const [profiles, setProfiles] = useState(product.profiles);
+
+    const updateTabContent = (index, newContent) => {
+      setProfiles((prevProfiles) =>
+        prevProfiles.map((profile, profileIndex) => {
+          if (profileIndex === index) {
+            return { ...profile, body: newContent };
+          } else {
+            return profile;
+          }
+        })
+      );
+    };
+
+    const saveTabContent = async (index) => {
+      const updatedProfile = profiles[index];
+      try {
+        await api.shopProductProfile.update(updatedProfile.id, {
+          body: updatedProfile.body,
+        });
+        console.log("Updated successfully");
+      } catch (error) {
+        console.error("Failed to update:", error);
+      }
+    };
+
+    return (
+      <div className="grid grid-cols-10 gap-2 overflow-x-auto p-4 rounded-xl border-2 border-gray-200 bg-white shadow-lg">
+        <div className="col-span-1 flex flex-col items-center justify-center">{product.image}</div>
+        <div className="col-span-2 flex flex-col items-start justify-center gap-2">
+          <div className="text-md font-bold text-900">{product.title}</div>
+          <div>Updated {product.daysSinceLastUpdate} day(s) ago</div>
+        </div>
+        <div className="col-span-6 flex flex-col items-center justify-center gap-2">
+          <div className="flex">
+            {tabs.map((tab, index) => (
+              <Tab key={tab.title} currentTab={currentTab} setTab={setTab} index={index}>
+                {tab.title}
+              </Tab>
+            ))}
+          </div>
+          <div className="flex flex-col w-full">
+            <InputTextarea
+              value={profiles[currentTab].body}
+              onChange={(e) => updateTabContent(currentTab, e.target.value)}
+              disabled={currentTab === 0}
+              autoResize
+            />
+            <div className="flex justify-end gap-2 mt-2">
+              <button onClick={() => saveTabContent(currentTab)} className="px-4 py-2 text-white bg-blue-500 rounded">
+                Save
+              </button>
+              <button className="px-4 py-2 text-white bg-green-500 rounded">Generate</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const header = (
+    <div className="p-d-flex p-ai-center p-jc-between">
+      <h3 className="p-m-0">Product List</h3>
+      <span className="p-input-icon-left">
+        <i className="pi pi-search" />
+        <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Global Search" />
+      </span>
+    </div>
+  );
+
   return (
     <Page title="Products">
       <Layout>
-        <Layout.Section>{renderProductList()}</Layout.Section>
+        <Layout.Section>
+          <DataView
+            value={products}
+            layout="list"
+            header={header}
+            itemTemplate={itemTemplate}
+            paginator
+            rows={10}
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+          />
+        </Layout.Section>
       </Layout>
     </Page>
   );
