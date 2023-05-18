@@ -8,7 +8,7 @@
 *  |____/ \___|\__,_|___/\___/|_| |_|_|_|  \__, |
 *                                          |___/ 
 *
-* Built for environment `"Development"` at version "454"
+* Built for environment `"Development"` at version "824"
 * Edit this app here: https://"seasonify".gadget.dev/edit
 */
 import { AmbientContext, ActionExecutionScope, NotYetTyped, ValidationErrors } from "./AmbientContext";
@@ -26,6 +26,7 @@ export * from "./models/ShopifyShop";
 export * from "./models/ShopifySync";
 export * from "./models/ShopifyProductImage";
 export * from "./models/ShopSeasonDimension";
+export * from "./models/ShopProductProfile";
 
 /**
  * An action context type for use in actions that can run on any model.

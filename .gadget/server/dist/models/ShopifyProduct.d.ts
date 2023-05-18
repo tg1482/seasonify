@@ -22,6 +22,7 @@ export declare type DefaultShopifyProductServerSelection = {
     readonly shopId: true;
     readonly shop: false;
     readonly images: false;
+    readonly shopProductProfiles: false;
 };
 /** All the data passed to an effect or precondition within the `create` action on the `shopifyProduct` model. */
 export interface CreateShopifyProductActionContext extends AmbientContext {

@@ -12,6 +12,7 @@ import { ShopifyShopManager } from "./models/ShopifyShop.js";
 import { ShopifySyncManager } from "./models/ShopifySync.js";
 import { ShopifyProductImageManager } from "./models/ShopifyProductImage.js";
 import { ShopSeasonDimensionManager } from "./models/ShopSeasonDimension.js";
+import { ShopProductProfileManager } from "./models/ShopProductProfile.js";
 import { CurrentSessionManager } from "./models/CurrentSession.js";
 import { globalActionRunner } from "@gadgetinc/api-client-core";
 
@@ -23,6 +24,7 @@ type InternalModelManagers = {
   shopifySync: InternalModelManager;
   shopifyProductImage: InternalModelManager;
   shopSeasonDimension: InternalModelManager;
+  shopProductProfile: InternalModelManager;
 };
 
 type ClientOptions = Omit<ApiClientOptions, "environment"> & { environment?: string };
@@ -55,6 +57,7 @@ export class Client implements AnyClient {
   shopifySync: ShopifySyncManager;
   shopifyProductImage: ShopifyProductImageManager;
   shopSeasonDimension: ShopSeasonDimensionManager;
+  shopProductProfile: ShopProductProfileManager;
   currentSession: CurrentSessionManager;
 
   /**
@@ -95,6 +98,7 @@ export class Client implements AnyClient {
     this.shopifySync = new ShopifySyncManager(this.connection);
     this.shopifyProductImage = new ShopifyProductImageManager(this.connection);
     this.shopSeasonDimension = new ShopSeasonDimensionManager(this.connection);
+    this.shopProductProfile = new ShopProductProfileManager(this.connection);
     this.currentSession = new CurrentSessionManager(this.connection);
 
     this.internal = {
@@ -130,6 +134,11 @@ export class Client implements AnyClient {
       }),
       shopSeasonDimension: new InternalModelManager("shopSeasonDimension", this.connection, { 
       	pluralApiIdentifier: "shopSeasonDimensions",
+        // @ts-ignore
+	      hasAmbiguousIdentifier: false,
+      }),
+      shopProductProfile: new InternalModelManager("shopProductProfile", this.connection, { 
+      	pluralApiIdentifier: "shopProductProfiles",
         // @ts-ignore
 	      hasAmbiguousIdentifier: false,
       }),

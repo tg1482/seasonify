@@ -21,6 +21,8 @@ export type DefaultShopSeasonDimensionServerSelection = {
    
     readonly shopId: true;
     readonly shop: false;
+   
+    readonly shopProductProfiles: false;
   };
 
   /** All the data passed to an effect or precondition within the `create` action on the `shopSeasonDimension` model. */

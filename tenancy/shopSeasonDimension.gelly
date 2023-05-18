@@ -1,0 +1,5 @@
+
+fragment Filter($session: Session) on ShopSeasonDimension {
+  *
+  [where shopId == $session.shopId]
+}

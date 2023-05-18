@@ -44,6 +44,9 @@ export type InternalShopifyProductImageRecord = Scalars["JSONObject"];
 /** Represents one Shop Season Dimension result record in internal api calls. Returns a JSON blob of all the record's fields. */
 export type InternalShopSeasonDimensionRecord = Scalars["JSONObject"];
 
+/** Represents one Shop Product Profile result record in internal api calls. Returns a JSON blob of all the record's fields. */
+export type InternalShopProductProfileRecord = Scalars["JSONObject"];
+
 
 
 export interface ShopifySyncSort {
@@ -364,6 +367,94 @@ export interface FloatFilter {
   greaterThan?: (Scalars['Float'] | null) | null;
 
   greaterThanOrEqual?: (Scalars['Float'] | null) | null;
+};
+
+
+
+export interface ShopProductProfileSort {
+
+  /** Sort the results by the id field. Defaults to ascending (smallest value first). */
+  id?: SortOrder | null;
+
+  /** Sort the results by the createdAt field. Defaults to ascending (smallest value first). */
+  createdAt?: SortOrder | null;
+
+  /** Sort the results by the updatedAt field. Defaults to ascending (smallest value first). */
+  updatedAt?: SortOrder | null;
+
+  /** Sort the results by the profileName field. Defaults to ascending (smallest value first). */
+  profileName?: SortOrder | null;
+
+  /** Sort the results by the active field. Defaults to ascending (smallest value first). */
+  active?: SortOrder | null;
+
+  /** Sort the results by the startDate field. Defaults to ascending (smallest value first). */
+  startDate?: SortOrder | null;
+
+  /** Sort the results by the endDate field. Defaults to ascending (smallest value first). */
+  endDate?: SortOrder | null;
+};
+
+
+
+export interface ShopProductProfileFilter {
+
+  AND?: (ShopProductProfileFilter | null)[];
+
+  OR?: (ShopProductProfileFilter | null)[];
+
+  NOT?: (ShopProductProfileFilter | null)[];
+
+  id?: IDFilter | null;
+
+  createdAt?: DateTimeFilter | null;
+
+  updatedAt?: DateTimeFilter | null;
+
+  product?: IDFilter | null;
+
+  shop?: IDFilter | null;
+
+  season?: IDFilter | null;
+
+  profileName?: StringFilter | null;
+
+  active?: BooleanFilter | null;
+
+  startDate?: DateFilter | null;
+
+  endDate?: DateFilter | null;
+};
+
+
+
+export interface DateFilter {
+
+  equals?: Date | Scalars['ISO8601DateString'] | null;
+
+  notEquals?: Date | Scalars['ISO8601DateString'] | null;
+
+  isSet?: (Scalars['Boolean'] | null) | null;
+
+  in?: (Date | Scalars['ISO8601DateString'] | null)[];
+
+  notIn?: (Date | Scalars['ISO8601DateString'] | null)[];
+
+  lessThan?: Date | Scalars['ISO8601DateString'] | null;
+
+  lessThanOrEqual?: Date | Scalars['ISO8601DateString'] | null;
+
+  greaterThan?: Date | Scalars['ISO8601DateString'] | null;
+
+  greaterThanOrEqual?: Date | Scalars['ISO8601DateString'] | null;
+
+  before?: Date | Scalars['ISO8601DateString'] | null;
+
+  beforeOrOn?: Date | Scalars['ISO8601DateString'] | null;
+
+  after?: Date | Scalars['ISO8601DateString'] | null;
+
+  afterOrOn?: Date | Scalars['ISO8601DateString'] | null;
 };
 
 
@@ -921,6 +1012,180 @@ export interface CreateShopSeasonDimensionInput {
   name?: (Scalars['String'] | null) | null;
 
   shop?: ShopifyShopBelongsToInput | null;
+
+  shopProductProfiles?: (ShopProductProfileHasManyInput | null)[];
+};
+
+
+
+export interface ShopProductProfileHasManyInput {
+
+  create?: NestedShopProductProfileCreateInput | null;
+
+  update?: NestedShopProductProfileUpdateInput | null;
+
+  delete?: NestedShopProductProfileDeleteInput | null;
+
+  /** Creates, updates, or deletes existing records in the database as needed to arrive at the list of records specified. */
+  _converge?: ConvergeShopProductProfileInput | null;
+};
+
+
+
+export interface NestedShopProductProfileCreateInput {
+
+  product?: ShopifyProductBelongsToInput | null;
+
+  shop?: ShopifyShopBelongsToInput | null;
+
+  season?: ShopSeasonDimensionBelongsToInput | null;
+
+  profileName?: (Scalars['String'] | null) | null;
+
+  active?: (Scalars['Boolean'] | null) | null;
+
+  startDate?: Date | Scalars['ISO8601DateString'] | null;
+
+  endDate?: Date | Scalars['ISO8601DateString'] | null;
+};
+
+
+
+export interface ShopifyProductBelongsToInput {
+
+  /** Existing ID of another record, which you would like to associate this record with */
+  _link?: (Scalars['GadgetID'] | null) | null;
+};
+
+
+
+export interface ShopSeasonDimensionBelongsToInput {
+
+  create?: NestedShopSeasonDimensionCreateInput | null;
+
+  update?: NestedShopSeasonDimensionUpdateInput | null;
+
+  delete?: NestedShopSeasonDimensionDeleteInput | null;
+
+  /** Existing ID of another record, which you would like to associate this record with */
+  _link?: (Scalars['GadgetID'] | null) | null;
+};
+
+
+
+export interface NestedShopSeasonDimensionCreateInput {
+
+  startDate?: Date | Scalars['ISO8601DateString'] | null;
+
+  endDate?: Date | Scalars['ISO8601DateString'] | null;
+
+  active?: (Scalars['Boolean'] | null) | null;
+
+  name?: (Scalars['String'] | null) | null;
+
+  shop?: ShopifyShopBelongsToInput | null;
+
+  shopProductProfiles?: (ShopProductProfileHasManyInput | null)[];
+};
+
+
+
+export interface NestedShopSeasonDimensionUpdateInput {
+
+  startDate?: Date | Scalars['ISO8601DateString'] | null;
+
+  endDate?: Date | Scalars['ISO8601DateString'] | null;
+
+  active?: (Scalars['Boolean'] | null) | null;
+
+  name?: (Scalars['String'] | null) | null;
+
+  shop?: ShopifyShopBelongsToInput | null;
+
+  shopProductProfiles?: (ShopProductProfileHasManyInput | null)[];
+
+  id: (Scalars['GadgetID'] | null);
+};
+
+
+
+export interface NestedShopSeasonDimensionDeleteInput {
+
+  id: (Scalars['GadgetID'] | null);
+};
+
+
+
+export interface NestedShopProductProfileUpdateInput {
+
+  product?: ShopifyProductBelongsToInput | null;
+
+  shop?: ShopifyShopBelongsToInput | null;
+
+  season?: ShopSeasonDimensionBelongsToInput | null;
+
+  profileName?: (Scalars['String'] | null) | null;
+
+  active?: (Scalars['Boolean'] | null) | null;
+
+  startDate?: Date | Scalars['ISO8601DateString'] | null;
+
+  endDate?: Date | Scalars['ISO8601DateString'] | null;
+
+  id: (Scalars['GadgetID'] | null);
+};
+
+
+
+export interface NestedShopProductProfileDeleteInput {
+
+  id: (Scalars['GadgetID'] | null);
+};
+
+
+
+export interface ConvergeShopProductProfileInput {
+
+  /** The new list of records to converge to */
+  values: (ConvergeShopProductProfileValues | null)[];
+
+  /** An optional partial set of action api identifiers to use when creating, updating, and deleting records to converge to the new list. */
+  actions?: ConvergeActionMap | null;
+};
+
+
+
+export interface ConvergeShopProductProfileValues {
+
+  id?: (Scalars['GadgetID'] | null) | null;
+
+  product?: ShopifyProductBelongsToInput | null;
+
+  shop?: ShopifyShopBelongsToInput | null;
+
+  season?: ShopSeasonDimensionBelongsToInput | null;
+
+  profileName?: (Scalars['String'] | null) | null;
+
+  active?: (Scalars['Boolean'] | null) | null;
+
+  startDate?: Date | Scalars['ISO8601DateString'] | null;
+
+  endDate?: Date | Scalars['ISO8601DateString'] | null;
+};
+
+
+
+export interface ConvergeActionMap {
+
+  /** One of the model action's API identifiers. Specifies which action to use to create new records that are in the set of specified records but not yet in the database. Defaults to the action named `create` if it exists. */
+  create?: (Scalars['String'] | null) | null;
+
+  /** One of the model action's API identifiers. Specifies which action to use to update new records that are in the set of specified records and already in the database, but maybe have different field values. Defaults to the action named `update` if it exists. */
+  update?: (Scalars['String'] | null) | null;
+
+  /** One of the model action's API identifiers. Specifies which action to use to delete records that are not in the set of specified records but exist in the database. Defaults to the action named `delete` if it exists. */
+  delete?: (Scalars['String'] | null) | null;
 };
 
 
@@ -936,6 +1201,46 @@ export interface UpdateShopSeasonDimensionInput {
   name?: (Scalars['String'] | null) | null;
 
   shop?: ShopifyShopBelongsToInput | null;
+
+  shopProductProfiles?: (ShopProductProfileHasManyInput | null)[];
+};
+
+
+
+export interface CreateShopProductProfileInput {
+
+  product?: ShopifyProductBelongsToInput | null;
+
+  shop?: ShopifyShopBelongsToInput | null;
+
+  season?: ShopSeasonDimensionBelongsToInput | null;
+
+  profileName?: (Scalars['String'] | null) | null;
+
+  active?: (Scalars['Boolean'] | null) | null;
+
+  startDate?: Date | Scalars['ISO8601DateString'] | null;
+
+  endDate?: Date | Scalars['ISO8601DateString'] | null;
+};
+
+
+
+export interface UpdateShopProductProfileInput {
+
+  product?: ShopifyProductBelongsToInput | null;
+
+  shop?: ShopifyShopBelongsToInput | null;
+
+  season?: ShopSeasonDimensionBelongsToInput | null;
+
+  profileName?: (Scalars['String'] | null) | null;
+
+  active?: (Scalars['Boolean'] | null) | null;
+
+  startDate?: Date | Scalars['ISO8601DateString'] | null;
+
+  endDate?: Date | Scalars['ISO8601DateString'] | null;
 };
 
 
@@ -1291,6 +1596,35 @@ export interface InternalShopSeasonDimensionInput {
 };
 
 
+
+export interface InternalShopProductProfileInput {
+
+  state?: (Scalars['RecordState'] | null) | null;
+
+  stateHistory?: (Scalars['RecordState'] | null) | null;
+
+  id?: (Scalars['GadgetID'] | null) | null;
+
+  createdAt?: Date | Scalars['ISO8601DateString'] | null;
+
+  updatedAt?: Date | Scalars['ISO8601DateString'] | null;
+
+  product?: InternalBelongsToInput | null;
+
+  shop?: InternalBelongsToInput | null;
+
+  season?: InternalBelongsToInput | null;
+
+  profileName?: (Scalars['String'] | null) | null;
+
+  active?: (Scalars['Boolean'] | null) | null;
+
+  startDate?: Date | Scalars['ISO8601DateString'] | null;
+
+  endDate?: Date | Scalars['ISO8601DateString'] | null;
+};
+
+
 /** All built-in and custom scalars, mapped to their actual values */
 export interface Scalars {
 
@@ -1329,6 +1663,12 @@ export interface Scalars {
 
   /** The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point). */
   Float: number;
+
+  /** A date-time or full-date string at UTC, such as 2007-12-03 or 2007-12-03T10:15:30Z, compliant with the `full-date` or `date-time` formats outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. If a full date-time is passed, timezone will be ignored and it will be truncated to just the date part. */
+  DateOrDateTime: Date;
+
+  /** A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
+  Date: Date;
 
   /** Instructions for a client to turn raw transport types (like strings) into useful client side types (like Dates). Unstable and not intended for developer use. */
   HydrationPlan: unknown;
@@ -1754,6 +2094,10 @@ export interface Query {
 
   shopSeasonDimensions: ShopSeasonDimensionConnection;
 
+  shopProductProfile: (ShopProductProfile | null);
+
+  shopProductProfiles: ShopProductProfileConnection;
+
   internal: (InternalQueries | null);
 
   currentSession: (Session | null);
@@ -1794,6 +2138,10 @@ export type AvailableQuerySelection = {
   shopSeasonDimension?: AvailableShopSeasonDimensionSelection;
 
   shopSeasonDimensions?: AvailableShopSeasonDimensionConnectionSelection;
+
+  shopProductProfile?: AvailableShopProductProfileSelection;
+
+  shopProductProfiles?: AvailableShopProductProfileConnectionSelection;
 
   internal?: AvailableInternalQueriesSelection;
 
@@ -2026,6 +2374,8 @@ export interface ShopifyShop {
 
   shopSeasonDimensions: ShopSeasonDimensionConnection;
 
+  shopProductProfiles: ShopProductProfileConnection;
+
   /** Get all the fields for this record. Useful for not having to list out all the fields you want to retrieve, but slower. */
   _all: Scalars['JSONObject'];
 };
@@ -2173,6 +2523,8 @@ export type AvailableShopifyShopSelection = {
   productImages?: AvailableShopifyProductImageConnectionSelection;
 
   shopSeasonDimensions?: AvailableShopSeasonDimensionConnectionSelection;
+
+  shopProductProfiles?: AvailableShopProductProfileConnectionSelection;
 
   /** Get all the fields for this record. Useful for not having to list out all the fields you want to retrieve, but slower. */
   _all?: boolean | null | undefined;
@@ -2551,6 +2903,8 @@ export interface ShopifyProduct {
 
   images: ShopifyProductImageConnection;
 
+  shopProductProfiles: ShopProductProfileConnection;
+
   /** Get all the fields for this record. Useful for not having to list out all the fields you want to retrieve, but slower. */
   _all: Scalars['JSONObject'];
 };
@@ -2601,6 +2955,8 @@ export type AvailableShopifyProductSelection = {
   shopId?: boolean | null | undefined;
 
   images?: AvailableShopifyProductImageConnectionSelection;
+
+  shopProductProfiles?: AvailableShopProductProfileConnectionSelection;
 
   /** Get all the fields for this record. Useful for not having to list out all the fields you want to retrieve, but slower. */
   _all?: boolean | null | undefined;
@@ -2737,6 +3093,202 @@ export type AvailableShopifyProductImageSelection = {
 };
 
 
+/** A connection to a list of ShopProductProfile items. */
+export interface ShopProductProfileConnection {
+
+  __typename: 'ShopProductProfileConnection';
+
+  /** A list of edges. */
+  edges: ShopProductProfileEdge[];
+
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+
+
+export type AvailableShopProductProfileConnectionSelection = {
+
+  __typename?: boolean | null | undefined;
+
+  /** A list of edges. */
+  edges?: AvailableShopProductProfileEdgeSelection;
+
+  /** Information to aid in pagination. */
+  pageInfo?: AvailablePageInfoSelection;
+};
+
+
+/** An edge in a ShopProductProfile connection. */
+export interface ShopProductProfileEdge {
+
+  __typename: 'ShopProductProfileEdge';
+
+  /** The item at the end of the edge */
+  node: ShopProductProfile;
+
+  /** A cursor for use in pagination */
+  cursor: Scalars['String'];
+};
+
+
+
+export type AvailableShopProductProfileEdgeSelection = {
+
+  __typename?: boolean | null | undefined;
+
+  /** The item at the end of the edge */
+  node?: AvailableShopProductProfileSelection;
+
+  /** A cursor for use in pagination */
+  cursor?: boolean | null | undefined;
+};
+
+
+
+export interface ShopProductProfile {
+
+  __typename: 'ShopProductProfile';
+
+  /** The globally unique, unchanging identifier for this record. Assigned and managed by Gadget. */
+  id: Scalars['GadgetID'];
+
+  /** The time at which this record was first created. Set once upon record creation and never changed. Managed by Gadget. */
+  createdAt: Scalars['DateTime'];
+
+  /** The time at which this record was last changed. Set each time the record is successfully acted upon by an action. Managed by Gadget. */
+  updatedAt: Scalars['DateTime'];
+
+  product: ShopifyProduct;
+
+  productId: Scalars['GadgetID'];
+
+  shop: (ShopifyShop | null);
+
+  shopId: (Scalars['GadgetID'] | null);
+
+  season: ShopSeasonDimension;
+
+  seasonId: Scalars['GadgetID'];
+
+  profileName: Scalars['String'];
+
+  active: Scalars['Boolean'];
+
+  startDate: (Scalars['Date'] | null);
+
+  endDate: (Scalars['Date'] | null);
+
+  /** Get all the fields for this record. Useful for not having to list out all the fields you want to retrieve, but slower. */
+  _all: Scalars['JSONObject'];
+};
+
+
+
+export type AvailableShopProductProfileSelection = {
+
+  __typename?: boolean | null | undefined;
+
+  /** The globally unique, unchanging identifier for this record. Assigned and managed by Gadget. */
+  id?: boolean | null | undefined;
+
+  /** The time at which this record was first created. Set once upon record creation and never changed. Managed by Gadget. */
+  createdAt?: boolean | null | undefined;
+
+  /** The time at which this record was last changed. Set each time the record is successfully acted upon by an action. Managed by Gadget. */
+  updatedAt?: boolean | null | undefined;
+
+  product?: AvailableShopifyProductSelection;
+
+  productId?: boolean | null | undefined;
+
+  shop?: AvailableShopifyShopSelection;
+
+  shopId?: boolean | null | undefined;
+
+  season?: AvailableShopSeasonDimensionSelection;
+
+  seasonId?: boolean | null | undefined;
+
+  profileName?: boolean | null | undefined;
+
+  active?: boolean | null | undefined;
+
+  startDate?: boolean | null | undefined;
+
+  endDate?: boolean | null | undefined;
+
+  /** Get all the fields for this record. Useful for not having to list out all the fields you want to retrieve, but slower. */
+  _all?: boolean | null | undefined;
+};
+
+
+
+export interface ShopSeasonDimension {
+
+  __typename: 'ShopSeasonDimension';
+
+  /** The globally unique, unchanging identifier for this record. Assigned and managed by Gadget. */
+  id: Scalars['GadgetID'];
+
+  /** The time at which this record was first created. Set once upon record creation and never changed. Managed by Gadget. */
+  createdAt: Scalars['DateTime'];
+
+  /** The time at which this record was last changed. Set each time the record is successfully acted upon by an action. Managed by Gadget. */
+  updatedAt: Scalars['DateTime'];
+
+  startDate: (Scalars['DateTime'] | null);
+
+  endDate: (Scalars['DateTime'] | null);
+
+  active: Scalars['Boolean'];
+
+  name: Scalars['String'];
+
+  shop: (ShopifyShop | null);
+
+  shopId: (Scalars['GadgetID'] | null);
+
+  shopProductProfiles: ShopProductProfileConnection;
+
+  /** Get all the fields for this record. Useful for not having to list out all the fields you want to retrieve, but slower. */
+  _all: Scalars['JSONObject'];
+};
+
+
+
+export type AvailableShopSeasonDimensionSelection = {
+
+  __typename?: boolean | null | undefined;
+
+  /** The globally unique, unchanging identifier for this record. Assigned and managed by Gadget. */
+  id?: boolean | null | undefined;
+
+  /** The time at which this record was first created. Set once upon record creation and never changed. Managed by Gadget. */
+  createdAt?: boolean | null | undefined;
+
+  /** The time at which this record was last changed. Set each time the record is successfully acted upon by an action. Managed by Gadget. */
+  updatedAt?: boolean | null | undefined;
+
+  startDate?: boolean | null | undefined;
+
+  endDate?: boolean | null | undefined;
+
+  active?: boolean | null | undefined;
+
+  name?: boolean | null | undefined;
+
+  shop?: AvailableShopifyShopSelection;
+
+  shopId?: boolean | null | undefined;
+
+  shopProductProfiles?: AvailableShopProductProfileConnectionSelection;
+
+  /** Get all the fields for this record. Useful for not having to list out all the fields you want to retrieve, but slower. */
+  _all?: boolean | null | undefined;
+};
+
+
 /** A connection to a list of ShopSeasonDimension items. */
 export interface ShopSeasonDimensionConnection {
 
@@ -2786,68 +3338,6 @@ export type AvailableShopSeasonDimensionEdgeSelection = {
 
   /** A cursor for use in pagination */
   cursor?: boolean | null | undefined;
-};
-
-
-
-export interface ShopSeasonDimension {
-
-  __typename: 'ShopSeasonDimension';
-
-  /** The globally unique, unchanging identifier for this record. Assigned and managed by Gadget. */
-  id: Scalars['GadgetID'];
-
-  /** The time at which this record was first created. Set once upon record creation and never changed. Managed by Gadget. */
-  createdAt: Scalars['DateTime'];
-
-  /** The time at which this record was last changed. Set each time the record is successfully acted upon by an action. Managed by Gadget. */
-  updatedAt: Scalars['DateTime'];
-
-  startDate: (Scalars['DateTime'] | null);
-
-  endDate: (Scalars['DateTime'] | null);
-
-  active: Scalars['Boolean'];
-
-  name: Scalars['String'];
-
-  shop: (ShopifyShop | null);
-
-  shopId: (Scalars['GadgetID'] | null);
-
-  /** Get all the fields for this record. Useful for not having to list out all the fields you want to retrieve, but slower. */
-  _all: Scalars['JSONObject'];
-};
-
-
-
-export type AvailableShopSeasonDimensionSelection = {
-
-  __typename?: boolean | null | undefined;
-
-  /** The globally unique, unchanging identifier for this record. Assigned and managed by Gadget. */
-  id?: boolean | null | undefined;
-
-  /** The time at which this record was first created. Set once upon record creation and never changed. Managed by Gadget. */
-  createdAt?: boolean | null | undefined;
-
-  /** The time at which this record was last changed. Set each time the record is successfully acted upon by an action. Managed by Gadget. */
-  updatedAt?: boolean | null | undefined;
-
-  startDate?: boolean | null | undefined;
-
-  endDate?: boolean | null | undefined;
-
-  active?: boolean | null | undefined;
-
-  name?: boolean | null | undefined;
-
-  shop?: AvailableShopifyShopSelection;
-
-  shopId?: boolean | null | undefined;
-
-  /** Get all the fields for this record. Useful for not having to list out all the fields you want to retrieve, but slower. */
-  _all?: boolean | null | undefined;
 };
 
 
@@ -2988,6 +3478,10 @@ export interface InternalQueries {
 
   listShopSeasonDimension: InternalShopSeasonDimensionRecordConnection;
 
+  shopProductProfile: (InternalShopProductProfileRecord | null);
+
+  listShopProductProfile: InternalShopProductProfileRecordConnection;
+
   /** Currently open platform transaction details, or null if no transaction is open */
   currentTransactionDetails: (Scalars['JSONObject'] | null);
 };
@@ -3025,6 +3519,10 @@ export type AvailableInternalQueriesSelection = {
   shopSeasonDimension?: boolean | null | undefined;
 
   listShopSeasonDimension?: AvailableInternalShopSeasonDimensionRecordConnectionSelection;
+
+  shopProductProfile?: boolean | null | undefined;
+
+  listShopProductProfile?: AvailableInternalShopProductProfileRecordConnectionSelection;
 
   /** Currently open platform transaction details, or null if no transaction is open */
   currentTransactionDetails?: boolean | null | undefined;
@@ -3395,6 +3893,58 @@ export type AvailableInternalShopSeasonDimensionRecordEdgeSelection = {
 };
 
 
+/** A connection to a list of InternalShopProductProfileRecord items. */
+export interface InternalShopProductProfileRecordConnection {
+
+  __typename: 'InternalShopProductProfileRecordConnection';
+
+  /** A list of edges. */
+  edges: InternalShopProductProfileRecordEdge[];
+
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+
+
+export type AvailableInternalShopProductProfileRecordConnectionSelection = {
+
+  __typename?: boolean | null | undefined;
+
+  /** A list of edges. */
+  edges?: AvailableInternalShopProductProfileRecordEdgeSelection;
+
+  /** Information to aid in pagination. */
+  pageInfo?: AvailablePageInfoSelection;
+};
+
+
+/** An edge in a InternalShopProductProfileRecord connection. */
+export interface InternalShopProductProfileRecordEdge {
+
+  __typename: 'InternalShopProductProfileRecordEdge';
+
+  /** The item at the end of the edge */
+  node: InternalShopProductProfileRecord;
+
+  /** A cursor for use in pagination */
+  cursor: Scalars['String'];
+};
+
+
+
+export type AvailableInternalShopProductProfileRecordEdgeSelection = {
+
+  __typename?: boolean | null | undefined;
+
+  /** The item at the end of the edge */
+  node?: boolean | null | undefined;
+
+  /** A cursor for use in pagination */
+  cursor?: boolean | null | undefined;
+};
+
+
 /** Represents one of the roles an identity in the system can be entitled to */
 export interface GadgetRole {
 
@@ -3560,6 +4110,14 @@ export interface Mutation {
 
   bulkDeleteShopSeasonDimensions: (BulkDeleteShopSeasonDimensionsResult | null);
 
+  createShopProductProfile: (CreateShopProductProfileResult | null);
+
+  updateShopProductProfile: (UpdateShopProductProfileResult | null);
+
+  deleteShopProductProfile: (DeleteShopProductProfileResult | null);
+
+  bulkDeleteShopProductProfiles: (BulkDeleteShopProductProfilesResult | null);
+
   globalShopifySync: (GlobalShopifySyncResult | null);
 
   internal: (InternalMutations | null);
@@ -3584,6 +4142,14 @@ export type AvailableMutationSelection = {
   deleteShopSeasonDimension?: AvailableDeleteShopSeasonDimensionResultSelection;
 
   bulkDeleteShopSeasonDimensions?: AvailableBulkDeleteShopSeasonDimensionsResultSelection;
+
+  createShopProductProfile?: AvailableCreateShopProductProfileResultSelection;
+
+  updateShopProductProfile?: AvailableUpdateShopProductProfileResultSelection;
+
+  deleteShopProductProfile?: AvailableDeleteShopProductProfileResultSelection;
+
+  bulkDeleteShopProductProfiles?: AvailableBulkDeleteShopProductProfilesResultSelection;
 
   globalShopifySync?: AvailableGlobalShopifySyncResultSelection;
 
@@ -3766,6 +4332,102 @@ export type AvailableBulkDeleteShopSeasonDimensionsResultSelection = {
 
 
 
+export interface CreateShopProductProfileResult {
+
+  __typename: 'CreateShopProductProfileResult';
+
+  success: Scalars['Boolean'];
+
+  errors: ExecutionError[];
+
+  shopProductProfile: (ShopProductProfile | null);
+};
+
+
+
+export type AvailableCreateShopProductProfileResultSelection = {
+
+  __typename?: boolean | null | undefined;
+
+  success?: boolean | null | undefined;
+
+  errors?: AvailableExecutionErrorSelection;
+
+  shopProductProfile?: AvailableShopProductProfileSelection;
+};
+
+
+
+export interface UpdateShopProductProfileResult {
+
+  __typename: 'UpdateShopProductProfileResult';
+
+  success: Scalars['Boolean'];
+
+  errors: ExecutionError[];
+
+  shopProductProfile: (ShopProductProfile | null);
+};
+
+
+
+export type AvailableUpdateShopProductProfileResultSelection = {
+
+  __typename?: boolean | null | undefined;
+
+  success?: boolean | null | undefined;
+
+  errors?: AvailableExecutionErrorSelection;
+
+  shopProductProfile?: AvailableShopProductProfileSelection;
+};
+
+
+
+export interface DeleteShopProductProfileResult {
+
+  __typename: 'DeleteShopProductProfileResult';
+
+  success: Scalars['Boolean'];
+
+  errors: ExecutionError[];
+};
+
+
+
+export type AvailableDeleteShopProductProfileResultSelection = {
+
+  __typename?: boolean | null | undefined;
+
+  success?: boolean | null | undefined;
+
+  errors?: AvailableExecutionErrorSelection;
+};
+
+
+
+export interface BulkDeleteShopProductProfilesResult {
+
+  __typename: 'BulkDeleteShopProductProfilesResult';
+
+  success: Scalars['Boolean'];
+
+  errors: ExecutionError[];
+};
+
+
+
+export type AvailableBulkDeleteShopProductProfilesResultSelection = {
+
+  __typename?: boolean | null | undefined;
+
+  success?: boolean | null | undefined;
+
+  errors?: AvailableExecutionErrorSelection;
+};
+
+
+
 export interface GlobalShopifySyncResult {
 
   __typename: 'GlobalShopifySyncResult';
@@ -3874,6 +4536,16 @@ export interface InternalMutations {
   deleteManyShopSeasonDimension: (InternalDeleteManyShopSeasonDimensionResult | null);
 
   bulkCreateShopSeasonDimensions: (InternalBulkCreateShopSeasonDimensionsResult | null);
+
+  createShopProductProfile: (InternalCreateShopProductProfileResult | null);
+
+  updateShopProductProfile: (InternalUpdateShopProductProfileResult | null);
+
+  deleteShopProductProfile: (InternalDeleteShopProductProfileResult | null);
+
+  deleteManyShopProductProfile: (InternalDeleteManyShopProductProfileResult | null);
+
+  bulkCreateShopProductProfiles: (InternalBulkCreateShopProductProfilesResult | null);
 };
 
 
@@ -3960,6 +4632,16 @@ export type AvailableInternalMutationsSelection = {
   deleteManyShopSeasonDimension?: AvailableInternalDeleteManyShopSeasonDimensionResultSelection;
 
   bulkCreateShopSeasonDimensions?: AvailableInternalBulkCreateShopSeasonDimensionsResultSelection;
+
+  createShopProductProfile?: AvailableInternalCreateShopProductProfileResultSelection;
+
+  updateShopProductProfile?: AvailableInternalUpdateShopProductProfileResultSelection;
+
+  deleteShopProductProfile?: AvailableInternalDeleteShopProductProfileResultSelection;
+
+  deleteManyShopProductProfile?: AvailableInternalDeleteManyShopProductProfileResultSelection;
+
+  bulkCreateShopProductProfiles?: AvailableInternalBulkCreateShopProductProfilesResultSelection;
 };
 
 
@@ -4868,6 +5550,132 @@ export type AvailableInternalBulkCreateShopSeasonDimensionsResultSelection = {
   errors?: AvailableExecutionErrorSelection;
 
   shopSeasonDimensions?: boolean | null | undefined;
+};
+
+
+
+export interface InternalCreateShopProductProfileResult {
+
+  __typename: 'InternalCreateShopProductProfileResult';
+
+  success: Scalars['Boolean'];
+
+  errors: ExecutionError[];
+
+  shopProductProfile: (InternalShopProductProfileRecord | null);
+};
+
+
+
+export type AvailableInternalCreateShopProductProfileResultSelection = {
+
+  __typename?: boolean | null | undefined;
+
+  success?: boolean | null | undefined;
+
+  errors?: AvailableExecutionErrorSelection;
+
+  shopProductProfile?: boolean | null | undefined;
+};
+
+
+
+export interface InternalUpdateShopProductProfileResult {
+
+  __typename: 'InternalUpdateShopProductProfileResult';
+
+  success: Scalars['Boolean'];
+
+  errors: ExecutionError[];
+
+  shopProductProfile: (InternalShopProductProfileRecord | null);
+};
+
+
+
+export type AvailableInternalUpdateShopProductProfileResultSelection = {
+
+  __typename?: boolean | null | undefined;
+
+  success?: boolean | null | undefined;
+
+  errors?: AvailableExecutionErrorSelection;
+
+  shopProductProfile?: boolean | null | undefined;
+};
+
+
+
+export interface InternalDeleteShopProductProfileResult {
+
+  __typename: 'InternalDeleteShopProductProfileResult';
+
+  success: Scalars['Boolean'];
+
+  errors: ExecutionError[];
+
+  shopProductProfile: (InternalShopProductProfileRecord | null);
+};
+
+
+
+export type AvailableInternalDeleteShopProductProfileResultSelection = {
+
+  __typename?: boolean | null | undefined;
+
+  success?: boolean | null | undefined;
+
+  errors?: AvailableExecutionErrorSelection;
+
+  shopProductProfile?: boolean | null | undefined;
+};
+
+
+
+export interface InternalDeleteManyShopProductProfileResult {
+
+  __typename: 'InternalDeleteManyShopProductProfileResult';
+
+  success: Scalars['Boolean'];
+
+  errors: ExecutionError[];
+};
+
+
+
+export type AvailableInternalDeleteManyShopProductProfileResultSelection = {
+
+  __typename?: boolean | null | undefined;
+
+  success?: boolean | null | undefined;
+
+  errors?: AvailableExecutionErrorSelection;
+};
+
+
+
+export interface InternalBulkCreateShopProductProfilesResult {
+
+  __typename: 'InternalBulkCreateShopProductProfilesResult';
+
+  success: Scalars['Boolean'];
+
+  errors: ExecutionError[];
+
+  shopProductProfiles: (InternalShopProductProfileRecord | null)[];
+};
+
+
+
+export type AvailableInternalBulkCreateShopProductProfilesResultSelection = {
+
+  __typename?: boolean | null | undefined;
+
+  success?: boolean | null | undefined;
+
+  errors?: AvailableExecutionErrorSelection;
+
+  shopProductProfiles?: boolean | null | undefined;
 };
 
 

@@ -14,11 +14,6 @@ module.exports = async ({ request, reply, api, logger, connections, params }) =>
   };
 
   logger.info(`Creating season records for shop with ID: ${shopId}`);
-  logger.info(`Request body keys: ${request.body}`);
-  logger.info(`Request body: ${requestBody}`);
-  logger.info(`API ${api}`);
-  logger.info(`Params ${Object.keys(params)}`);
-  logger.info(`Current year: ${currentYear}`);
 
   for (const season in seasons) {
     const dummyRecord = {

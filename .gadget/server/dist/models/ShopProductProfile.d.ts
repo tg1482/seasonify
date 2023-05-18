@@ -1,29 +1,32 @@
 import { AmbientContext, ActionExecutionScope, NotYetTyped, ActionTrigger } from "../AmbientContext";
-import { GadgetRecord, ShopSeasonDimension } from "@gadget-client/seasonify";
+import { GadgetRecord, ShopProductProfile } from "@gadget-client/seasonify";
 import { Select } from "@gadgetinc/api-client-core";
-export declare type DefaultShopSeasonDimensionServerSelection = {
+export declare type DefaultShopProductProfileServerSelection = {
     readonly __typename: true;
     readonly id: true;
     readonly createdAt: true;
     readonly updatedAt: true;
-    readonly startDate: true;
-    readonly endDate: true;
-    readonly active: true;
-    readonly name: true;
+    readonly productId: true;
+    readonly product: false;
     readonly shopId: true;
     readonly shop: false;
-    readonly shopProductProfiles: false;
+    readonly seasonId: true;
+    readonly season: false;
+    readonly profileName: true;
+    readonly active: true;
+    readonly startDate: true;
+    readonly endDate: true;
 };
-/** All the data passed to an effect or precondition within the `create` action on the `shopSeasonDimension` model. */
-export interface CreateShopSeasonDimensionActionContext extends AmbientContext {
+/** All the data passed to an effect or precondition within the `create` action on the `shopProductProfile` model. */
+export interface CreateShopProductProfileActionContext extends AmbientContext {
     /**
   * The model of the record this action is operating on
   */
     model: NotYetTyped;
     /**
-  * The `Shop Season Dimension` record this action is operating on.
+  * The `Shop Product Profile` record this action is operating on.
   */
-    record: GadgetRecord<Select<ShopSeasonDimension, DefaultShopSeasonDimensionServerSelection>>;
+    record: GadgetRecord<Select<ShopProductProfile, DefaultShopProductProfileServerSelection>>;
     /**
   * An object passed between all preconditions and effects of an action execution at the `scope` property.
   * Useful for transferring data between effects.
@@ -37,16 +40,16 @@ export interface CreateShopSeasonDimensionActionContext extends AmbientContext {
         [key: string]: string | number | boolean | object | bigint | undefined;
     };
 }
-/** All the data passed to an effect or precondition within the `delete` action on the `shopSeasonDimension` model. */
-export interface DeleteShopSeasonDimensionActionContext extends AmbientContext {
+/** All the data passed to an effect or precondition within the `update` action on the `shopProductProfile` model. */
+export interface UpdateShopProductProfileActionContext extends AmbientContext {
     /**
   * The model of the record this action is operating on
   */
     model: NotYetTyped;
     /**
-  * The `Shop Season Dimension` record this action is operating on.
+  * The `Shop Product Profile` record this action is operating on.
   */
-    record: GadgetRecord<Select<ShopSeasonDimension, DefaultShopSeasonDimensionServerSelection>>;
+    record: GadgetRecord<Select<ShopProductProfile, DefaultShopProductProfileServerSelection>>;
     /**
   * An object passed between all preconditions and effects of an action execution at the `scope` property.
   * Useful for transferring data between effects.
@@ -60,16 +63,16 @@ export interface DeleteShopSeasonDimensionActionContext extends AmbientContext {
         [key: string]: string | number | boolean | object | bigint | undefined;
     };
 }
-/** All the data passed to an effect or precondition within the `update` action on the `shopSeasonDimension` model. */
-export interface UpdateShopSeasonDimensionActionContext extends AmbientContext {
+/** All the data passed to an effect or precondition within the `delete` action on the `shopProductProfile` model. */
+export interface DeleteShopProductProfileActionContext extends AmbientContext {
     /**
   * The model of the record this action is operating on
   */
     model: NotYetTyped;
     /**
-  * The `Shop Season Dimension` record this action is operating on.
+  * The `Shop Product Profile` record this action is operating on.
   */
-    record: GadgetRecord<Select<ShopSeasonDimension, DefaultShopSeasonDimensionServerSelection>>;
+    record: GadgetRecord<Select<ShopProductProfile, DefaultShopProductProfileServerSelection>>;
     /**
   * An object passed between all preconditions and effects of an action execution at the `scope` property.
   * Useful for transferring data between effects.

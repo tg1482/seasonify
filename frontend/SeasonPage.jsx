@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { DataView } from "primereact/dataview";
-import { ToggleButton } from "primereact/togglebutton";
-import { Calendar } from "primereact/calendar";
 import { useQuery, useMutation, useFetch } from "@gadgetinc/react";
 import { Layout, Page, Spinner, Text } from "@shopify/polaris";
 import moment from "moment";
@@ -101,7 +99,6 @@ const SeasonForm = ({ register, errors, handleSubmit, saveChanges, season, cance
 };
 
 const SeasonCard = ({ season, startEditing, updateActiveStatus }) => {
-  console.log(season);
   const handleActiveToggle = () => {
     const updatedSeason = {
       ...season,
@@ -205,9 +202,15 @@ const SeasonPage = () => {
     body: JSON.stringify({ shopId: shopId }),
   });
 
+  const [{}, seedProfileSend] = useFetch("/install/product-profile-seed", {
+    method: "POST",
+    body: JSON.stringify({ shopId: shopId }),
+  });
+
   const handleSeedClick = () => {
     console.log("Clicked seed button.");
-    seedSend();
+    // seedSend();
+    seedProfileSend();
     if (!seedError) {
       console.log("Seed button was clicked. Data seeding has been initiated.");
     } else {

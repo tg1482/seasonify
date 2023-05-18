@@ -10,4 +10,5 @@ export * from "./models/ShopifyShop";
 export * from "./models/ShopifySync";
 export * from "./models/ShopifyProductImage";
 export * from "./models/ShopSeasonDimension";
+export * from "./models/ShopProductProfile";
 //# sourceMappingURL=index.js.map

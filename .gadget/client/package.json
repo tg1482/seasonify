@@ -1,6 +1,6 @@
 {
   "name": "@gadget-client/seasonify",
-  "version": "1.454.0",
+  "version": "1.824.0",
   "files": [
     "dist-*/",
     "types",
@@ -30,6 +30,6 @@
   "gadget": {
     "applicationName": "Seasonify",
     "environmentName": "Development",
-    "environmentVersion": "454"
+    "environmentVersion": "824"
   }
 }

@@ -1,8 +1,8 @@
-// All the generated types for the "Shopify Product" model preconditions, actions, params, etc
+// All the generated types for the "Shop Product Profile" model preconditions, actions, params, etc
 import { AmbientContext, ActionExecutionScope, NotYetTyped, ValidationErrors, ActionTrigger } from "../AmbientContext";
-import { GadgetRecord, ShopifyProduct } from "@gadget-client/seasonify";
+import { GadgetRecord, ShopProductProfile } from "@gadget-client/seasonify";
 import { Select } from "@gadgetinc/api-client-core";
-export type DefaultShopifyProductServerSelection = {
+export type DefaultShopProductProfileServerSelection = {
   readonly __typename: true;
    
     readonly id: true;
@@ -11,42 +11,26 @@ export type DefaultShopifyProductServerSelection = {
    
     readonly updatedAt: true;
    
-    readonly productCategory: true;
-   
-    readonly body: true;
-   
-    readonly shopifyCreatedAt: true;
-   
-    readonly handle: true;
-   
-    readonly productType: true;
-   
-    readonly publishedAt: true;
-   
-    readonly publishedScope: true;
-   
-    readonly status: true;
-   
-    readonly tags: true;
-   
-    readonly templateSuffix: true;
-   
-    readonly title: true;
-   
-    readonly shopifyUpdatedAt: true;
-   
-    readonly vendor: true;
+    readonly productId: true;
+    readonly product: false;
    
     readonly shopId: true;
     readonly shop: false;
    
-    readonly images: false;
+    readonly seasonId: true;
+    readonly season: false;
    
-    readonly shopProductProfiles: false;
+    readonly profileName: true;
+   
+    readonly active: true;
+   
+    readonly startDate: true;
+   
+    readonly endDate: true;
   };
 
-  /** All the data passed to an effect or precondition within the `create` action on the `shopifyProduct` model. */
-export interface CreateShopifyProductActionContext extends AmbientContext {
+  /** All the data passed to an effect or precondition within the `create` action on the `shopProductProfile` model. */
+export interface CreateShopProductProfileActionContext extends AmbientContext {
 
   /**
 * The model of the record this action is operating on
@@ -54,9 +38,9 @@ export interface CreateShopifyProductActionContext extends AmbientContext {
   model: NotYetTyped;
 
   /**
-* The `Shopify Product` record this action is operating on.
+* The `Shop Product Profile` record this action is operating on.
 */
-  record: GadgetRecord<Select<ShopifyProduct, DefaultShopifyProductServerSelection>>;
+  record: GadgetRecord<Select<ShopProductProfile, DefaultShopProductProfileServerSelection>>;
 
   /**
 * An object passed between all preconditions and effects of an action execution at the `scope` property.
@@ -76,8 +60,8 @@ export interface CreateShopifyProductActionContext extends AmbientContext {
 };
 
 
-    /** All the data passed to an effect or precondition within the `update` action on the `shopifyProduct` model. */
-export interface UpdateShopifyProductActionContext extends AmbientContext {
+    /** All the data passed to an effect or precondition within the `update` action on the `shopProductProfile` model. */
+export interface UpdateShopProductProfileActionContext extends AmbientContext {
 
   /**
 * The model of the record this action is operating on
@@ -85,9 +69,9 @@ export interface UpdateShopifyProductActionContext extends AmbientContext {
   model: NotYetTyped;
 
   /**
-* The `Shopify Product` record this action is operating on.
+* The `Shop Product Profile` record this action is operating on.
 */
-  record: GadgetRecord<Select<ShopifyProduct, DefaultShopifyProductServerSelection>>;
+  record: GadgetRecord<Select<ShopProductProfile, DefaultShopProductProfileServerSelection>>;
 
   /**
 * An object passed between all preconditions and effects of an action execution at the `scope` property.
@@ -107,8 +91,8 @@ export interface UpdateShopifyProductActionContext extends AmbientContext {
 };
 
 
-    /** All the data passed to an effect or precondition within the `delete` action on the `shopifyProduct` model. */
-export interface DeleteShopifyProductActionContext extends AmbientContext {
+    /** All the data passed to an effect or precondition within the `delete` action on the `shopProductProfile` model. */
+export interface DeleteShopProductProfileActionContext extends AmbientContext {
 
   /**
 * The model of the record this action is operating on
@@ -116,9 +100,9 @@ export interface DeleteShopifyProductActionContext extends AmbientContext {
   model: NotYetTyped;
 
   /**
-* The `Shopify Product` record this action is operating on.
+* The `Shop Product Profile` record this action is operating on.
 */
-  record: GadgetRecord<Select<ShopifyProduct, DefaultShopifyProductServerSelection>>;
+  record: GadgetRecord<Select<ShopProductProfile, DefaultShopProductProfileServerSelection>>;
 
   /**
 * An object passed between all preconditions and effects of an action execution at the `scope` property.

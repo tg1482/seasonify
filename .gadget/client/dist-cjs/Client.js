@@ -49,6 +49,7 @@ var import_ShopifyShop = __toModule(require("./models/ShopifyShop.js"));
 var import_ShopifySync = __toModule(require("./models/ShopifySync.js"));
 var import_ShopifyProductImage = __toModule(require("./models/ShopifyProductImage.js"));
 var import_ShopSeasonDimension = __toModule(require("./models/ShopSeasonDimension.js"));
+var import_ShopProductProfile = __toModule(require("./models/ShopProductProfile.js"));
 var import_CurrentSession = __toModule(require("./models/CurrentSession.js"));
 var import_api_client_core2 = __toModule(require("@gadgetinc/api-client-core"));
 const productionEnv = "production";
@@ -103,6 +104,7 @@ class Client {
     this.shopifySync = new import_ShopifySync.ShopifySyncManager(this.connection);
     this.shopifyProductImage = new import_ShopifyProductImage.ShopifyProductImageManager(this.connection);
     this.shopSeasonDimension = new import_ShopSeasonDimension.ShopSeasonDimensionManager(this.connection);
+    this.shopProductProfile = new import_ShopProductProfile.ShopProductProfileManager(this.connection);
     this.currentSession = new import_CurrentSession.CurrentSessionManager(this.connection);
     this.internal = {
       session: new import_api_client_core.InternalModelManager("session", this.connection, {
@@ -131,6 +133,10 @@ class Client {
       }),
       shopSeasonDimension: new import_api_client_core.InternalModelManager("shopSeasonDimension", this.connection, {
         pluralApiIdentifier: "shopSeasonDimensions",
+        hasAmbiguousIdentifier: false
+      }),
+      shopProductProfile: new import_api_client_core.InternalModelManager("shopProductProfile", this.connection, {
+        pluralApiIdentifier: "shopProductProfiles",
         hasAmbiguousIdentifier: false
       })
     };

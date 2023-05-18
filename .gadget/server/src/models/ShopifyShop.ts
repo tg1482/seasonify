@@ -138,6 +138,8 @@ export type DefaultShopifyShopServerSelection = {
     readonly productImages: false;
    
     readonly shopSeasonDimensions: false;
+   
+    readonly shopProductProfiles: false;
   };
 
   /** All the data passed to an effect or precondition within the `install` action on the `shopifyShop` model. */
