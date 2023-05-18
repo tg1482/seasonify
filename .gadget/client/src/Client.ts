@@ -11,6 +11,7 @@ import { ShopifyProductManager } from "./models/ShopifyProduct.js";
 import { ShopifyShopManager } from "./models/ShopifyShop.js";
 import { ShopifySyncManager } from "./models/ShopifySync.js";
 import { ShopifyProductImageManager } from "./models/ShopifyProductImage.js";
+import { ShopSeasonDimensionManager } from "./models/ShopSeasonDimension.js";
 import { CurrentSessionManager } from "./models/CurrentSession.js";
 import { globalActionRunner } from "@gadgetinc/api-client-core";
 
@@ -21,6 +22,7 @@ type InternalModelManagers = {
   shopifyShop: InternalModelManager;
   shopifySync: InternalModelManager;
   shopifyProductImage: InternalModelManager;
+  shopSeasonDimension: InternalModelManager;
 };
 
 type ClientOptions = Omit<ApiClientOptions, "environment"> & { environment?: string };
@@ -52,6 +54,7 @@ export class Client implements AnyClient {
   shopifyShop: ShopifyShopManager;
   shopifySync: ShopifySyncManager;
   shopifyProductImage: ShopifyProductImageManager;
+  shopSeasonDimension: ShopSeasonDimensionManager;
   currentSession: CurrentSessionManager;
 
   /**
@@ -91,6 +94,7 @@ export class Client implements AnyClient {
     this.shopifyShop = new ShopifyShopManager(this.connection);
     this.shopifySync = new ShopifySyncManager(this.connection);
     this.shopifyProductImage = new ShopifyProductImageManager(this.connection);
+    this.shopSeasonDimension = new ShopSeasonDimensionManager(this.connection);
     this.currentSession = new CurrentSessionManager(this.connection);
 
     this.internal = {
@@ -121,6 +125,11 @@ export class Client implements AnyClient {
       }),
       shopifyProductImage: new InternalModelManager("shopifyProductImage", this.connection, { 
       	pluralApiIdentifier: "shopifyProductImages",
+        // @ts-ignore
+	      hasAmbiguousIdentifier: false,
+      }),
+      shopSeasonDimension: new InternalModelManager("shopSeasonDimension", this.connection, { 
+      	pluralApiIdentifier: "shopSeasonDimensions",
         // @ts-ignore
 	      hasAmbiguousIdentifier: false,
       }),

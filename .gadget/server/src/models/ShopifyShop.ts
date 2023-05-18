@@ -136,6 +136,8 @@ export type DefaultShopifyShopServerSelection = {
     readonly zipCode: true;
    
     readonly productImages: false;
+   
+    readonly shopSeasonDimensions: false;
   };
 
   /** All the data passed to an effect or precondition within the `install` action on the `shopifyShop` model. */

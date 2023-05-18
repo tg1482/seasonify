@@ -23,6 +23,8 @@ export declare type InternalShopifyShopRecord = Scalars["JSONObject"];
 export declare type InternalShopifySyncRecord = Scalars["JSONObject"];
 /** Represents one Shopify Product Image result record in internal api calls. Returns a JSON blob of all the record's fields. */
 export declare type InternalShopifyProductImageRecord = Scalars["JSONObject"];
+/** Represents one Shop Season Dimension result record in internal api calls. Returns a JSON blob of all the record's fields. */
+export declare type InternalShopSeasonDimensionRecord = Scalars["JSONObject"];
 export interface ShopifySyncSort {
     /** Sort the results by the id field. Defaults to ascending (smallest value first). */
     id?: SortOrder | null;
@@ -243,6 +245,35 @@ export interface ShopifyProductFilter {
     title?: StringFilter | null;
     shopifyUpdatedAt?: DateTimeFilter | null;
     vendor?: StringFilter | null;
+    shop?: IDFilter | null;
+}
+export interface ShopSeasonDimensionSort {
+    /** Sort the results by the id field. Defaults to ascending (smallest value first). */
+    id?: SortOrder | null;
+    /** Sort the results by the createdAt field. Defaults to ascending (smallest value first). */
+    createdAt?: SortOrder | null;
+    /** Sort the results by the updatedAt field. Defaults to ascending (smallest value first). */
+    updatedAt?: SortOrder | null;
+    /** Sort the results by the startDate field. Defaults to ascending (smallest value first). */
+    startDate?: SortOrder | null;
+    /** Sort the results by the endDate field. Defaults to ascending (smallest value first). */
+    endDate?: SortOrder | null;
+    /** Sort the results by the active field. Defaults to ascending (smallest value first). */
+    active?: SortOrder | null;
+    /** Sort the results by the name field. Defaults to ascending (smallest value first). */
+    name?: SortOrder | null;
+}
+export interface ShopSeasonDimensionFilter {
+    AND?: (ShopSeasonDimensionFilter | null)[];
+    OR?: (ShopSeasonDimensionFilter | null)[];
+    NOT?: (ShopSeasonDimensionFilter | null)[];
+    id?: IDFilter | null;
+    createdAt?: DateTimeFilter | null;
+    updatedAt?: DateTimeFilter | null;
+    startDate?: DateTimeFilter | null;
+    endDate?: DateTimeFilter | null;
+    active?: BooleanFilter | null;
+    name?: StringFilter | null;
     shop?: IDFilter | null;
 }
 export interface ShopifyShopSort {
@@ -469,6 +500,20 @@ export interface ErrorShopifySyncInput {
     models?: (Scalars['JSON'] | null) | null;
     shop?: ShopifyShopBelongsToInput | null;
 }
+export interface CreateShopSeasonDimensionInput {
+    startDate?: Date | Scalars['ISO8601DateString'] | null;
+    endDate?: Date | Scalars['ISO8601DateString'] | null;
+    active?: (Scalars['Boolean'] | null) | null;
+    name?: (Scalars['String'] | null) | null;
+    shop?: ShopifyShopBelongsToInput | null;
+}
+export interface UpdateShopSeasonDimensionInput {
+    startDate?: Date | Scalars['ISO8601DateString'] | null;
+    endDate?: Date | Scalars['ISO8601DateString'] | null;
+    active?: (Scalars['Boolean'] | null) | null;
+    name?: (Scalars['String'] | null) | null;
+    shop?: ShopifyShopBelongsToInput | null;
+}
 export interface InternalSessionInput {
     state?: (Scalars['RecordState'] | null) | null;
     stateHistory?: (Scalars['RecordState'] | null) | null;
@@ -632,6 +677,18 @@ export interface InternalShopifyProductImageAtomicsInput {
     position?: (NumericAtomicFieldUpdateInput)[];
     /** Numeric atomic commands for operating on width. */
     width?: (NumericAtomicFieldUpdateInput)[];
+}
+export interface InternalShopSeasonDimensionInput {
+    state?: (Scalars['RecordState'] | null) | null;
+    stateHistory?: (Scalars['RecordState'] | null) | null;
+    id?: (Scalars['GadgetID'] | null) | null;
+    createdAt?: Date | Scalars['ISO8601DateString'] | null;
+    updatedAt?: Date | Scalars['ISO8601DateString'] | null;
+    startDate?: Date | Scalars['ISO8601DateString'] | null;
+    endDate?: Date | Scalars['ISO8601DateString'] | null;
+    active?: (Scalars['Boolean'] | null) | null;
+    name?: (Scalars['String'] | null) | null;
+    shop?: InternalBelongsToInput | null;
 }
 /** All built-in and custom scalars, mapped to their actual values */
 export interface Scalars {
@@ -879,6 +936,8 @@ export interface Query {
     shopifySyncs: ShopifySyncConnection;
     shopifyProductImage: (ShopifyProductImage | null);
     shopifyProductImages: ShopifyProductImageConnection;
+    shopSeasonDimension: (ShopSeasonDimension | null);
+    shopSeasonDimensions: ShopSeasonDimensionConnection;
     internal: (InternalQueries | null);
     currentSession: (Session | null);
     shopifyConnection: Shopify;
@@ -897,6 +956,8 @@ export declare type AvailableQuerySelection = {
     shopifySyncs?: AvailableShopifySyncConnectionSelection;
     shopifyProductImage?: AvailableShopifyProductImageSelection;
     shopifyProductImages?: AvailableShopifyProductImageConnectionSelection;
+    shopSeasonDimension?: AvailableShopSeasonDimensionSelection;
+    shopSeasonDimensions?: AvailableShopSeasonDimensionConnectionSelection;
     internal?: AvailableInternalQueriesSelection;
     currentSession?: AvailableSessionSelection;
     shopifyConnection?: AvailableShopifySelection;
@@ -1018,6 +1079,7 @@ export interface ShopifyShop {
     products: ShopifyProductConnection;
     zipCode: (Scalars['String'] | null);
     productImages: ShopifyProductImageConnection;
+    shopSeasonDimensions: ShopSeasonDimensionConnection;
     /** Get all the fields for this record. Useful for not having to list out all the fields you want to retrieve, but slower. */
     _all: Scalars['JSONObject'];
 }
@@ -1093,6 +1155,7 @@ export declare type AvailableShopifyShopSelection = {
     products?: AvailableShopifyProductConnectionSelection;
     zipCode?: boolean | null | undefined;
     productImages?: AvailableShopifyProductImageConnectionSelection;
+    shopSeasonDimensions?: AvailableShopSeasonDimensionConnectionSelection;
     /** Get all the fields for this record. Useful for not having to list out all the fields you want to retrieve, but slower. */
     _all?: boolean | null | undefined;
 };
@@ -1409,6 +1472,70 @@ export declare type AvailableShopifyProductImageSelection = {
     /** Get all the fields for this record. Useful for not having to list out all the fields you want to retrieve, but slower. */
     _all?: boolean | null | undefined;
 };
+/** A connection to a list of ShopSeasonDimension items. */
+export interface ShopSeasonDimensionConnection {
+    __typename: 'ShopSeasonDimensionConnection';
+    /** A list of edges. */
+    edges: ShopSeasonDimensionEdge[];
+    /** Information to aid in pagination. */
+    pageInfo: PageInfo;
+}
+export declare type AvailableShopSeasonDimensionConnectionSelection = {
+    __typename?: boolean | null | undefined;
+    /** A list of edges. */
+    edges?: AvailableShopSeasonDimensionEdgeSelection;
+    /** Information to aid in pagination. */
+    pageInfo?: AvailablePageInfoSelection;
+};
+/** An edge in a ShopSeasonDimension connection. */
+export interface ShopSeasonDimensionEdge {
+    __typename: 'ShopSeasonDimensionEdge';
+    /** The item at the end of the edge */
+    node: ShopSeasonDimension;
+    /** A cursor for use in pagination */
+    cursor: Scalars['String'];
+}
+export declare type AvailableShopSeasonDimensionEdgeSelection = {
+    __typename?: boolean | null | undefined;
+    /** The item at the end of the edge */
+    node?: AvailableShopSeasonDimensionSelection;
+    /** A cursor for use in pagination */
+    cursor?: boolean | null | undefined;
+};
+export interface ShopSeasonDimension {
+    __typename: 'ShopSeasonDimension';
+    /** The globally unique, unchanging identifier for this record. Assigned and managed by Gadget. */
+    id: Scalars['GadgetID'];
+    /** The time at which this record was first created. Set once upon record creation and never changed. Managed by Gadget. */
+    createdAt: Scalars['DateTime'];
+    /** The time at which this record was last changed. Set each time the record is successfully acted upon by an action. Managed by Gadget. */
+    updatedAt: Scalars['DateTime'];
+    startDate: (Scalars['DateTime'] | null);
+    endDate: (Scalars['DateTime'] | null);
+    active: Scalars['Boolean'];
+    name: Scalars['String'];
+    shop: (ShopifyShop | null);
+    shopId: (Scalars['GadgetID'] | null);
+    /** Get all the fields for this record. Useful for not having to list out all the fields you want to retrieve, but slower. */
+    _all: Scalars['JSONObject'];
+}
+export declare type AvailableShopSeasonDimensionSelection = {
+    __typename?: boolean | null | undefined;
+    /** The globally unique, unchanging identifier for this record. Assigned and managed by Gadget. */
+    id?: boolean | null | undefined;
+    /** The time at which this record was first created. Set once upon record creation and never changed. Managed by Gadget. */
+    createdAt?: boolean | null | undefined;
+    /** The time at which this record was last changed. Set each time the record is successfully acted upon by an action. Managed by Gadget. */
+    updatedAt?: boolean | null | undefined;
+    startDate?: boolean | null | undefined;
+    endDate?: boolean | null | undefined;
+    active?: boolean | null | undefined;
+    name?: boolean | null | undefined;
+    shop?: AvailableShopifyShopSelection;
+    shopId?: boolean | null | undefined;
+    /** Get all the fields for this record. Useful for not having to list out all the fields you want to retrieve, but slower. */
+    _all?: boolean | null | undefined;
+};
 /** A connection to a list of Session items. */
 export interface SessionConnection {
     __typename: 'SessionConnection';
@@ -1483,6 +1610,8 @@ export interface InternalQueries {
     listShopifySync: InternalShopifySyncRecordConnection;
     shopifyProductImage: (InternalShopifyProductImageRecord | null);
     listShopifyProductImage: InternalShopifyProductImageRecordConnection;
+    shopSeasonDimension: (InternalShopSeasonDimensionRecord | null);
+    listShopSeasonDimension: InternalShopSeasonDimensionRecordConnection;
     /** Currently open platform transaction details, or null if no transaction is open */
     currentTransactionDetails: (Scalars['JSONObject'] | null);
 }
@@ -1500,6 +1629,8 @@ export declare type AvailableInternalQueriesSelection = {
     listShopifySync?: AvailableInternalShopifySyncRecordConnectionSelection;
     shopifyProductImage?: boolean | null | undefined;
     listShopifyProductImage?: AvailableInternalShopifyProductImageRecordConnectionSelection;
+    shopSeasonDimension?: boolean | null | undefined;
+    listShopSeasonDimension?: AvailableInternalShopSeasonDimensionRecordConnectionSelection;
     /** Currently open platform transaction details, or null if no transaction is open */
     currentTransactionDetails?: boolean | null | undefined;
 };
@@ -1683,6 +1814,36 @@ export declare type AvailableInternalShopifyProductImageRecordEdgeSelection = {
     /** A cursor for use in pagination */
     cursor?: boolean | null | undefined;
 };
+/** A connection to a list of InternalShopSeasonDimensionRecord items. */
+export interface InternalShopSeasonDimensionRecordConnection {
+    __typename: 'InternalShopSeasonDimensionRecordConnection';
+    /** A list of edges. */
+    edges: InternalShopSeasonDimensionRecordEdge[];
+    /** Information to aid in pagination. */
+    pageInfo: PageInfo;
+}
+export declare type AvailableInternalShopSeasonDimensionRecordConnectionSelection = {
+    __typename?: boolean | null | undefined;
+    /** A list of edges. */
+    edges?: AvailableInternalShopSeasonDimensionRecordEdgeSelection;
+    /** Information to aid in pagination. */
+    pageInfo?: AvailablePageInfoSelection;
+};
+/** An edge in a InternalShopSeasonDimensionRecord connection. */
+export interface InternalShopSeasonDimensionRecordEdge {
+    __typename: 'InternalShopSeasonDimensionRecordEdge';
+    /** The item at the end of the edge */
+    node: InternalShopSeasonDimensionRecord;
+    /** A cursor for use in pagination */
+    cursor: Scalars['String'];
+}
+export declare type AvailableInternalShopSeasonDimensionRecordEdgeSelection = {
+    __typename?: boolean | null | undefined;
+    /** The item at the end of the edge */
+    node?: boolean | null | undefined;
+    /** A cursor for use in pagination */
+    cursor?: boolean | null | undefined;
+};
 /** Represents one of the roles an identity in the system can be entitled to */
 export interface GadgetRole {
     __typename: 'GadgetRole';
@@ -1763,6 +1924,10 @@ export interface Mutation {
     runShopifySync: (RunShopifySyncResult | null);
     completeShopifySync: (CompleteShopifySyncResult | null);
     errorShopifySync: (ErrorShopifySyncResult | null);
+    createShopSeasonDimension: (CreateShopSeasonDimensionResult | null);
+    updateShopSeasonDimension: (UpdateShopSeasonDimensionResult | null);
+    deleteShopSeasonDimension: (DeleteShopSeasonDimensionResult | null);
+    bulkDeleteShopSeasonDimensions: (BulkDeleteShopSeasonDimensionsResult | null);
     globalShopifySync: (GlobalShopifySyncResult | null);
     internal: (InternalMutations | null);
 }
@@ -1771,6 +1936,10 @@ export declare type AvailableMutationSelection = {
     runShopifySync?: AvailableRunShopifySyncResultSelection;
     completeShopifySync?: AvailableCompleteShopifySyncResultSelection;
     errorShopifySync?: AvailableErrorShopifySyncResultSelection;
+    createShopSeasonDimension?: AvailableCreateShopSeasonDimensionResultSelection;
+    updateShopSeasonDimension?: AvailableUpdateShopSeasonDimensionResultSelection;
+    deleteShopSeasonDimension?: AvailableDeleteShopSeasonDimensionResultSelection;
+    bulkDeleteShopSeasonDimensions?: AvailableBulkDeleteShopSeasonDimensionsResultSelection;
     globalShopifySync?: AvailableGlobalShopifySyncResultSelection;
     internal?: AvailableInternalMutationsSelection;
 };
@@ -1809,6 +1978,50 @@ export declare type AvailableErrorShopifySyncResultSelection = {
     success?: boolean | null | undefined;
     errors?: AvailableExecutionErrorSelection;
     shopifySync?: AvailableShopifySyncSelection;
+};
+export interface CreateShopSeasonDimensionResult {
+    __typename: 'CreateShopSeasonDimensionResult';
+    success: Scalars['Boolean'];
+    errors: ExecutionError[];
+    shopSeasonDimension: (ShopSeasonDimension | null);
+}
+export declare type AvailableCreateShopSeasonDimensionResultSelection = {
+    __typename?: boolean | null | undefined;
+    success?: boolean | null | undefined;
+    errors?: AvailableExecutionErrorSelection;
+    shopSeasonDimension?: AvailableShopSeasonDimensionSelection;
+};
+export interface UpdateShopSeasonDimensionResult {
+    __typename: 'UpdateShopSeasonDimensionResult';
+    success: Scalars['Boolean'];
+    errors: ExecutionError[];
+    shopSeasonDimension: (ShopSeasonDimension | null);
+}
+export declare type AvailableUpdateShopSeasonDimensionResultSelection = {
+    __typename?: boolean | null | undefined;
+    success?: boolean | null | undefined;
+    errors?: AvailableExecutionErrorSelection;
+    shopSeasonDimension?: AvailableShopSeasonDimensionSelection;
+};
+export interface DeleteShopSeasonDimensionResult {
+    __typename: 'DeleteShopSeasonDimensionResult';
+    success: Scalars['Boolean'];
+    errors: ExecutionError[];
+}
+export declare type AvailableDeleteShopSeasonDimensionResultSelection = {
+    __typename?: boolean | null | undefined;
+    success?: boolean | null | undefined;
+    errors?: AvailableExecutionErrorSelection;
+};
+export interface BulkDeleteShopSeasonDimensionsResult {
+    __typename: 'BulkDeleteShopSeasonDimensionsResult';
+    success: Scalars['Boolean'];
+    errors: ExecutionError[];
+}
+export declare type AvailableBulkDeleteShopSeasonDimensionsResultSelection = {
+    __typename?: boolean | null | undefined;
+    success?: boolean | null | undefined;
+    errors?: AvailableExecutionErrorSelection;
 };
 export interface GlobalShopifySyncResult {
     __typename: 'GlobalShopifySyncResult';
@@ -1859,6 +2072,11 @@ export interface InternalMutations {
     deleteShopifyProductImage: (InternalDeleteShopifyProductImageResult | null);
     deleteManyShopifyProductImage: (InternalDeleteManyShopifyProductImageResult | null);
     bulkCreateShopifyProductImages: (InternalBulkCreateShopifyProductImagesResult | null);
+    createShopSeasonDimension: (InternalCreateShopSeasonDimensionResult | null);
+    updateShopSeasonDimension: (InternalUpdateShopSeasonDimensionResult | null);
+    deleteShopSeasonDimension: (InternalDeleteShopSeasonDimensionResult | null);
+    deleteManyShopSeasonDimension: (InternalDeleteManyShopSeasonDimensionResult | null);
+    bulkCreateShopSeasonDimensions: (InternalBulkCreateShopSeasonDimensionsResult | null);
 }
 export declare type AvailableInternalMutationsSelection = {
     __typename?: boolean | null | undefined;
@@ -1897,6 +2115,11 @@ export declare type AvailableInternalMutationsSelection = {
     deleteShopifyProductImage?: AvailableInternalDeleteShopifyProductImageResultSelection;
     deleteManyShopifyProductImage?: AvailableInternalDeleteManyShopifyProductImageResultSelection;
     bulkCreateShopifyProductImages?: AvailableInternalBulkCreateShopifyProductImagesResultSelection;
+    createShopSeasonDimension?: AvailableInternalCreateShopSeasonDimensionResultSelection;
+    updateShopSeasonDimension?: AvailableInternalUpdateShopSeasonDimensionResultSelection;
+    deleteShopSeasonDimension?: AvailableInternalDeleteShopSeasonDimensionResultSelection;
+    deleteManyShopSeasonDimension?: AvailableInternalDeleteManyShopSeasonDimensionResultSelection;
+    bulkCreateShopSeasonDimensions?: AvailableInternalBulkCreateShopSeasonDimensionsResultSelection;
 };
 export interface LockOperationResult {
     __typename: 'LockOperationResult';
@@ -2259,6 +2482,64 @@ export declare type AvailableInternalBulkCreateShopifyProductImagesResultSelecti
     success?: boolean | null | undefined;
     errors?: AvailableExecutionErrorSelection;
     shopifyProductImages?: boolean | null | undefined;
+};
+export interface InternalCreateShopSeasonDimensionResult {
+    __typename: 'InternalCreateShopSeasonDimensionResult';
+    success: Scalars['Boolean'];
+    errors: ExecutionError[];
+    shopSeasonDimension: (InternalShopSeasonDimensionRecord | null);
+}
+export declare type AvailableInternalCreateShopSeasonDimensionResultSelection = {
+    __typename?: boolean | null | undefined;
+    success?: boolean | null | undefined;
+    errors?: AvailableExecutionErrorSelection;
+    shopSeasonDimension?: boolean | null | undefined;
+};
+export interface InternalUpdateShopSeasonDimensionResult {
+    __typename: 'InternalUpdateShopSeasonDimensionResult';
+    success: Scalars['Boolean'];
+    errors: ExecutionError[];
+    shopSeasonDimension: (InternalShopSeasonDimensionRecord | null);
+}
+export declare type AvailableInternalUpdateShopSeasonDimensionResultSelection = {
+    __typename?: boolean | null | undefined;
+    success?: boolean | null | undefined;
+    errors?: AvailableExecutionErrorSelection;
+    shopSeasonDimension?: boolean | null | undefined;
+};
+export interface InternalDeleteShopSeasonDimensionResult {
+    __typename: 'InternalDeleteShopSeasonDimensionResult';
+    success: Scalars['Boolean'];
+    errors: ExecutionError[];
+    shopSeasonDimension: (InternalShopSeasonDimensionRecord | null);
+}
+export declare type AvailableInternalDeleteShopSeasonDimensionResultSelection = {
+    __typename?: boolean | null | undefined;
+    success?: boolean | null | undefined;
+    errors?: AvailableExecutionErrorSelection;
+    shopSeasonDimension?: boolean | null | undefined;
+};
+export interface InternalDeleteManyShopSeasonDimensionResult {
+    __typename: 'InternalDeleteManyShopSeasonDimensionResult';
+    success: Scalars['Boolean'];
+    errors: ExecutionError[];
+}
+export declare type AvailableInternalDeleteManyShopSeasonDimensionResultSelection = {
+    __typename?: boolean | null | undefined;
+    success?: boolean | null | undefined;
+    errors?: AvailableExecutionErrorSelection;
+};
+export interface InternalBulkCreateShopSeasonDimensionsResult {
+    __typename: 'InternalBulkCreateShopSeasonDimensionsResult';
+    success: Scalars['Boolean'];
+    errors: ExecutionError[];
+    shopSeasonDimensions: (InternalShopSeasonDimensionRecord | null)[];
+}
+export declare type AvailableInternalBulkCreateShopSeasonDimensionsResultSelection = {
+    __typename?: boolean | null | undefined;
+    success?: boolean | null | undefined;
+    errors?: AvailableExecutionErrorSelection;
+    shopSeasonDimensions?: boolean | null | undefined;
 };
 export declare type ExplicitNestingRequired = never;
 export declare type DeepFilterNever<T> = T extends Record<string, unknown> ? FilterNever<{

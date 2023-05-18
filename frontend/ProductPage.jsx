@@ -65,7 +65,6 @@ const productImagesQuery = `
 `;
 
 const ProductPage = () => {
-  const [{ data, fetching, error }] = useFindFirst(api.shopifyShop);
   const [{ data: metaData, fetching: fetchingGadgetMeta }] = useQuery({
     query: gadgetMetaQuery,
   });
@@ -77,15 +76,6 @@ const ProductPage = () => {
   });
 
   const renderProductList = () => {
-    if (fetchingProducts || fetchingProductImages) return <Spinner accessibilityLabel="Loading products" size="large" />;
-
-    if (productsError || productImagesError)
-      return (
-        <Text variant="bodyMd" as="p">
-          Error loading products or images
-        </Text>
-      );
-
     const { edges: productEdges } = productsData.shopifyProducts;
     const { edges: imageEdges } = productImagesData.shopifyProductImages;
 
@@ -191,17 +181,17 @@ const ProductPage = () => {
     );
   };
 
-  if (error) {
+  if (productsError || productImagesError) {
     return (
       <Page title="Error">
         <Text variant="bodyMd" as="p">
-          Error: {error.toString()}
+          Error: {productsError || productImagesError}
         </Text>
       </Page>
     );
   }
 
-  if (fetching || fetchingGadgetMeta) {
+  if (fetchingGadgetMeta || fetchingProducts || fetchingProductImages) {
     return (
       <div
         style={{

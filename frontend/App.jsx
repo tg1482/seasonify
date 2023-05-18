@@ -4,6 +4,7 @@ import { Page, Spinner, Text } from "@shopify/polaris";
 import { useEffect, useMemo } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import AboutPage from "./AboutPage";
+import SeasonPage from "./SeasonPage";
 import ProductPage from "./ProductPage";
 import ShopPage from "./ShopPage";
 import { api } from "./api";
@@ -65,6 +66,7 @@ function EmbeddedApp() {
       <Routes>
         <Route path="/" element={<ShopPage />} />
         <Route path="/products" element={<ProductPage />} />
+        <Route path="/seasons" element={<SeasonPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="*" element={<Error404 />} />
       </Routes>
@@ -77,6 +79,10 @@ function EmbeddedApp() {
           {
             label: "Products",
             destination: "/products",
+          },
+          {
+            label: "Seasons",
+            destination: "/seasons",
           },
           {
             label: "About",

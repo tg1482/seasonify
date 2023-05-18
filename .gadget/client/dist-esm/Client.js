@@ -5,6 +5,7 @@ import { ShopifyProductManager } from "./models/ShopifyProduct.js";
 import { ShopifyShopManager } from "./models/ShopifyShop.js";
 import { ShopifySyncManager } from "./models/ShopifySync.js";
 import { ShopifyProductImageManager } from "./models/ShopifyProductImage.js";
+import { ShopSeasonDimensionManager } from "./models/ShopSeasonDimension.js";
 import { CurrentSessionManager } from "./models/CurrentSession.js";
 import { globalActionRunner } from "@gadgetinc/api-client-core";
 const productionEnv = "production";
@@ -58,6 +59,7 @@ class Client {
     this.shopifyShop = new ShopifyShopManager(this.connection);
     this.shopifySync = new ShopifySyncManager(this.connection);
     this.shopifyProductImage = new ShopifyProductImageManager(this.connection);
+    this.shopSeasonDimension = new ShopSeasonDimensionManager(this.connection);
     this.currentSession = new CurrentSessionManager(this.connection);
     this.internal = {
       session: new InternalModelManager("session", this.connection, {
@@ -82,6 +84,10 @@ class Client {
       }),
       shopifyProductImage: new InternalModelManager("shopifyProductImage", this.connection, {
         pluralApiIdentifier: "shopifyProductImages",
+        hasAmbiguousIdentifier: false
+      }),
+      shopSeasonDimension: new InternalModelManager("shopSeasonDimension", this.connection, {
+        pluralApiIdentifier: "shopSeasonDimensions",
         hasAmbiguousIdentifier: false
       })
     };

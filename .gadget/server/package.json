@@ -1,6 +1,6 @@
 {
   "name": "gadget-server",
-  "version": "1.47.0",
+  "version": "1.454.0",
   "files": [
     "dist/**/*"
   ],
@@ -25,6 +25,6 @@
   "gadget": {
     "applicationName": "Seasonify",
     "environmentName": "Development",
-    "environmentVersion": "47"
+    "environmentVersion": "454"
   }
 }

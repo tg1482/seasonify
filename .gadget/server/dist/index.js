@@ -9,4 +9,5 @@ export * from "./models/ShopifyProduct";
 export * from "./models/ShopifyShop";
 export * from "./models/ShopifySync";
 export * from "./models/ShopifyProductImage";
+export * from "./models/ShopSeasonDimension";
 //# sourceMappingURL=index.js.map
