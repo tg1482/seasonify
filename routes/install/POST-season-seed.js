@@ -3,7 +3,8 @@
  * @param {String} shopId - the shop id where records will be created.
  */
 module.exports = async ({ request, reply, api, logger, connections, params }) => {
-  const { shopId } = request.body;
+  const requestBody = JSON.parse(request.body);
+  const { shopId } = requestBody;
   const currentYear = new Date().getFullYear();
   const seasons = {
     Spring: { startDate: new Date(currentYear, 2, 1), endDate: new Date(currentYear, 5, 31) },
@@ -13,7 +14,8 @@ module.exports = async ({ request, reply, api, logger, connections, params }) =>
   };
 
   logger.info(`Creating season records for shop with ID: ${shopId}`);
-  logger.info(`Request body: ${Object.keys(request.body)}`);
+  logger.info(`Request body keys: ${request.body}`);
+  logger.info(`Request body: ${requestBody}`);
   logger.info(`API ${api}`);
   logger.info(`Params ${Object.keys(params)}`);
   logger.info(`Current year: ${currentYear}`);

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { DataView } from "primereact/dataview";
+import { ToggleButton } from "primereact/togglebutton";
+import { Calendar } from "primereact/calendar";
 import { useQuery, useMutation, useFetch } from "@gadgetinc/react";
 import { Layout, Page, Spinner, Text } from "@shopify/polaris";
 import moment from "moment";
@@ -98,13 +100,28 @@ const SeasonForm = ({ register, errors, handleSubmit, saveChanges, season, cance
   );
 };
 
-const SeasonCard = ({ season, startEditing }) => {
+const SeasonCard = ({ season, startEditing, updateActiveStatus }) => {
+  console.log(season);
+  const handleActiveToggle = () => {
+    const updatedSeason = {
+      ...season,
+      active: !season.active,
+    };
+    updateActiveStatus(updatedSeason);
+  };
+
   return (
     <div className="flex flex-col p-6 space-y-2 bg-white rounded shadow mb-1">
       <h4 className="text-lg font-bold">{season.name}</h4>
       <p>Start Date: {season.startDate}</p>
       <p>End Date: {season.endDate}</p>
-      <p>Status: {season.active}</p>
+      <div className="flex flex-row items-center gap-4 justify-start">
+        <p>Status: {season.active ? "Active" : "Inactive"}</p>
+        {/* toggle button below */}
+        <button onClick={handleActiveToggle} className="px-4 py-2 text-white bg-gray-800 rounded w-20">
+          Toggle
+        </button>
+      </div>
       <button onClick={() => startEditing(season)} className="px-4 py-2 text-white bg-gray-800 rounded w-20">
         Edit
       </button>
@@ -119,6 +136,8 @@ const SeasonPage = () => {
 
   // const shopId = data?.shopSeasonDimensions?.edges[0]?.node?.shopId;
   const shopId = 76379554098;
+
+  // Form state logic - Season Edit / Create
 
   const {
     register,
@@ -168,6 +187,19 @@ const SeasonPage = () => {
     }
   };
 
+  // Active Status Toggle Logic
+
+  const updateActiveStatus = async (season) => {
+    console.log("Updating season active status:", season);
+    try {
+      await api.shopSeasonDimension.update(season.id, { active: season.active });
+    } catch (err) {
+      console.error("Error updating season:", err);
+    }
+  };
+
+  // Seeding logic
+
   const [{ fetching: seedFetching, error: seedError }, seedSend] = useFetch("/install/season-seed", {
     method: "POST",
     body: JSON.stringify({ shopId: shopId }),
@@ -183,20 +215,22 @@ const SeasonPage = () => {
     }
   };
 
+  // Form Display Logic
+
   const seasonData = data?.shopSeasonDimensions?.edges?.map((season) => ({
     id: season.node.id,
     name: season.node.name,
     startDate: moment(season.node.startDate).format("MMMM D, YYYY"),
     endDate: moment(season.node.endDate).format("MMMM D, YYYY"),
     updatedAt: moment(season.node.updatedAt).format("MMMM D, YYYY"),
-    active: season.node.active ? "Active" : "Inactive",
+    active: season.node.active,
   }));
 
   const seasonItemTemplate = (season) => {
     if (editSeason === season.id) {
       return <SeasonForm {...{ register, errors, handleSubmit, saveChanges, season, cancelEditing }} />;
     } else {
-      return <SeasonCard {...{ season, startEditing }} />;
+      return <SeasonCard {...{ season, startEditing, updateActiveStatus }} />;
     }
   };
 
