@@ -23,7 +23,6 @@ module.exports = async ({ request, reply, api, logger, connections, params }) =>
       startDate: seasons[season].startDate,
       endDate: seasons[season].endDate,
       active: false,
-      live: false, // TODO: Change this based on ProfileManager.getCurrentProfileStatus()
     };
 
     try {

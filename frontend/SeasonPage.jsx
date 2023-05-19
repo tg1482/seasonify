@@ -108,20 +108,33 @@ const SeasonCard = ({ season, startEditing, updateActiveStatus }) => {
   };
 
   return (
-    <div className="flex flex-col p-6 space-y-2 bg-white rounded shadow mb-1">
+    <div className="flex flex-col p-3 pl-5 space-y-2 bg-white rounded-lg shadow mb-1">
       <h4 className="text-lg font-bold">{season.name}</h4>
-      <p>Start Date: {season.startDate}</p>
-      <p>End Date: {season.endDate}</p>
-      <div className="flex flex-row items-center gap-4 justify-start">
-        <p>Status: {season.active ? "Active" : "Inactive"}</p>
-        {/* toggle button below */}
-        <button onClick={handleActiveToggle} className="px-4 py-2 text-white bg-gray-800 rounded w-20">
-          Toggle
+      <div className="flex flex-col items-start gap-2 justify-start bg-slate-50 w-max p-2 text-md">
+        <p>
+          {" "}
+          <span className="font-bold text-xs">Start Date:</span> {season.startDate}
+        </p>
+        <p>
+          {" "}
+          <span className="font-bold text-xs">End Date:</span> {season.endDate}
+        </p>
+        <p>
+          {" "}
+          <span className="font-bold text-xs">Status:</span> {season.active ? "Active" : "Inactive"}
+        </p>
+      </div>
+      <div className="flex flex-row items-center gap-2 justify-start">
+        <button onClick={() => startEditing(season)} className="px-5 py-1 text-white bg-gray-800 rounded text-sm">
+          Edit
+        </button>
+        <button
+          onClick={handleActiveToggle}
+          className={`px-3 py-1 text-white bg-gray-800 rounded text-sm ${!season.active ? "bg-green-600" : "bg-red-700"}`}
+        >
+          {season.active ? "Deactivate" : "Activate"}
         </button>
       </div>
-      <button onClick={() => startEditing(season)} className="px-4 py-2 text-white bg-gray-800 rounded w-20">
-        Edit
-      </button>
     </div>
   );
 };
@@ -207,10 +220,14 @@ const SeasonPage = () => {
     body: JSON.stringify({ shopId: shopId }),
   });
 
-  const handleSeedClick = () => {
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
+  const handleSeedClick = async () => {
     console.log("Clicked seed button.");
-    // seedSend();
-    seedProfileSend();
+    await seedSend();
+    console.log("Waiting...");
+    await delay(3000);
+    await seedProfileSend();
     if (!seedError) {
       console.log("Seed button was clicked. Data seeding has been initiated.");
     } else {
@@ -262,7 +279,7 @@ const SeasonPage = () => {
         />
       ) : (
         <>
-          <div className="flex flex-col mb-5 mt-2 gap-4 rounded">
+          <div className="flex flex-col mb-5 rounded">
             <DataView value={seasonData} itemTemplate={seasonItemTemplate} layout="list" />
           </div>
           <button onClick={toggleNewForm} className="flex px-4 py-2 text-white bg-gray-800 rounded mb-4">

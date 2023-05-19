@@ -4,18 +4,22 @@ module.exports = async ({ request, reply, api, logger, connections, params }) =>
   const seasons = await api.shopSeasonDimension.findMany();
   const products = await api.shopifyProduct.findMany();
 
-  logger.info(`Creating product records for shop with ID: ${shopId}`);
-
   for (const season of seasons) {
     for (const product of products) {
-      logger.info(`Product ID: ${product.id}`);
-      logger.info(`Season ID: ${season.id}`);
+      // logger.info(`Product ID: ${product.id}`);
+      logger.info(`Season ID: ${season.name}`);
+      logger.info(`Creating product records for shop with ID: ${shopId}`);
+
+      logger.info(`Pulled data for ${seasons.length} seasons`);
+      logger.info(`Pulled data for ${products.length} products`);
       const dummyRecord = {
         profileName: `${season.name} - ${product.title}`,
         active: false,
+        // live if summer else false
+        live: season.name === "Summer" ? true : false, // TODO: Change this to based on ProfileManager
         startDate: season.startDate,
         endDate: season.endDate,
-        body: product.body || "",
+        profileBody: product.body || "",
         product: { _link: product.id },
         season: { _link: season.id },
         shop: { _link: shopId },
