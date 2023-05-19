@@ -7,6 +7,7 @@ module.exports = async ({ request, reply, api, logger, connections, params }) =>
   const { shopId } = requestBody;
   const currentYear = new Date().getFullYear();
   const seasons = {
+    Default: { startDate: new Date(currentYear, 0, 1), endDate: new Date(currentYear, 11, 31) },
     Spring: { startDate: new Date(currentYear, 2, 1), endDate: new Date(currentYear, 5, 31) },
     Summer: { startDate: new Date(currentYear, 5, 1), endDate: new Date(currentYear, 8, 31) },
     Fall: { startDate: new Date(currentYear, 8, 1), endDate: new Date(currentYear, 11, 30) },
@@ -22,6 +23,7 @@ module.exports = async ({ request, reply, api, logger, connections, params }) =>
       startDate: seasons[season].startDate,
       endDate: seasons[season].endDate,
       active: false,
+      live: false, // TODO: Change this based on ProfileManager.getCurrentProfileStatus()
     };
 
     try {

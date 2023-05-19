@@ -75,6 +75,15 @@ class Client {
       variablesType: {},
       variables: {}
     });
+    this.dailyCronProfileUpdate = Object.assign(async () => {
+      return await (0, import_api_client_core2.globalActionRunner)(this.connection, "dailyCronProfileUpdate", {}, null);
+    }, {
+      type: "globalAction",
+      operationName: "dailyCronProfileUpdate",
+      namespace: null,
+      variablesType: {},
+      variables: {}
+    });
     this.transaction = async (callback) => {
       return await this.connection.transaction(callback);
     };

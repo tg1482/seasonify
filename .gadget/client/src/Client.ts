@@ -179,6 +179,39 @@ globalShopifySync: {
   } as const
 );
 
+  /** Executes the dailyCronProfileUpdate global action. */
+dailyCronProfileUpdate: {
+  (
+  ): Promise<any>;
+  type: "globalAction",
+  operationName: "dailyCronProfileUpdate",
+  namespace: null,
+  variablesType: Record<string, never>;
+  variables: {
+  }
+} = Object.assign(
+  async (
+  ): Promise<any> => {
+    return (await globalActionRunner(
+      this.connection,
+      "dailyCronProfileUpdate",
+      {
+      },
+      null
+    ));
+  },
+  {
+    type: "globalAction",
+    operationName: "dailyCronProfileUpdate",
+    namespace: null,
+
+    variablesType: {} as Record<string, never>,
+
+    variables: {
+    },
+  } as const
+);
+
 
   /** Run an arbitrary GraphQL query. */
   async query(graphQL: string | DocumentNode, variables?: Record<string, any>, options?: Partial<OperationContext>) {

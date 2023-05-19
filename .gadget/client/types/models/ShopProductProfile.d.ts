@@ -9,7 +9,8 @@ export declare const DefaultShopProductProfileSelection: {
     readonly active: true;
     readonly startDate: true;
     readonly endDate: true;
-    readonly body: true;
+    readonly profileBody: true;
+    readonly live: true;
 };
 /**
 * Produce a type that holds only the selected fields (and nested fields) of "Shop Product Profile". The present fields in the result type of this are dynamic based on the options to each call that uses it.
@@ -240,7 +241,8 @@ export declare class ShopProductProfileManager {
             readonly active: true;
             readonly startDate: true;
             readonly endDate: true;
-            readonly body: true;
+            readonly profileBody: true;
+            readonly live: true;
         };
         readonly selectionType: AvailableShopProductProfileSelection;
         readonly optionsType: CreateShopProductProfileOptions;
@@ -271,7 +273,8 @@ export declare class ShopProductProfileManager {
             readonly active: true;
             readonly startDate: true;
             readonly endDate: true;
-            readonly body: true;
+            readonly profileBody: true;
+            readonly live: true;
         };
         readonly selectionType: AvailableShopProductProfileSelection;
         readonly optionsType: UpdateShopProductProfileOptions;

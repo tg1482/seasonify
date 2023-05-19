@@ -43,7 +43,8 @@ const combinedProductQuery = `
           id
           profileName
           active
-          body
+          profileBody
+          live
           shop {
             id
           }
@@ -80,8 +81,6 @@ const ProductPage = () => {
     query: combinedProductQuery,
   });
 
-  const [currentTab, setTab] = useState(0);
-
   if (combinedError) {
     return (
       <Page title="Error">
@@ -112,6 +111,7 @@ const ProductPage = () => {
 
   const { edges: profileEdges } = combinedData.shopProductProfiles;
 
+  // Get the product profiles view by compressing the profiles (product-season) into a product-[season] object
   const productProfiles = profileEdges.reduce((acc, edge) => {
     // Create a new profile without the product information
     const { product, ...profile } = edge.node;
@@ -134,6 +134,7 @@ const ProductPage = () => {
     return acc;
   }, {});
 
+  // Massage the data into a format that the data view can use
   const products = Object.values(productProfiles).map((productData, index) => {
     const { id, title, updatedAt, profiles, imageURL } = productData;
 
@@ -149,31 +150,34 @@ const ProductPage = () => {
     };
   });
 
+  // Function to render the content of tab panel
   const Tab = ({ children, currentTab, setTab, index }) => {
     return (
       <div
         onClick={() => setTab(index)}
-        className={`px-4 py-2 cursor-pointer rounded ${currentTab === index ? "bg-blue-400 text-white" : "bg-white text-blue-500"}`}
+        className={`px-4 py-2 cursor-pointer w-min rounded ${currentTab === index ? "bg-blue-400 text-white" : "bg-white text-blue-500"}`}
       >
         {children}
       </div>
     );
   };
 
+  // Function to render the content of each card in the data view (product info + season tabs + profile body)
   const itemTemplate = (product) => {
     const [currentTab, setTab] = useState(0);
     const tabs = product.profiles.map((profile, index) => ({
       title: profile.season.name,
-      content: profile.body,
+      content: profile.profileBody,
       id: profile.id,
     }));
     const [profiles, setProfiles] = useState(product.profiles);
 
+    // Update the profile body when the tab content changes
     const updateTabContent = (index, newContent) => {
       setProfiles((prevProfiles) =>
         prevProfiles.map((profile, profileIndex) => {
           if (profileIndex === index) {
-            return { ...profile, body: newContent };
+            return { ...profile, profileBody: newContent };
           } else {
             return profile;
           }
@@ -181,11 +185,12 @@ const ProductPage = () => {
       );
     };
 
+    // Save the profile body when button is clicked
     const saveTabContent = async (index) => {
       const updatedProfile = profiles[index];
       try {
         await api.shopProductProfile.update(updatedProfile.id, {
-          body: updatedProfile.body,
+          profileBody: updatedProfile.profileBody,
         });
         console.log("Updated successfully");
       } catch (error) {
@@ -200,19 +205,19 @@ const ProductPage = () => {
           <div className="text-md font-bold text-900">{product.title}</div>
           <div>Updated {product.daysSinceLastUpdate} day(s) ago</div>
         </div>
-        <div className="col-span-6 flex flex-col items-center justify-center gap-2">
-          <div className="flex">
+        <div className="col-span-6 flex flex-col items-center justify-center gap-1">
+          <div className="flex flex-row w-full gap-3">
             {tabs.map((tab, index) => (
               <Tab key={tab.title} currentTab={currentTab} setTab={setTab} index={index}>
                 {tab.title}
               </Tab>
             ))}
           </div>
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col w-full bg-slate-50 p-2 rounded-md">
             <InputTextarea
-              value={profiles[currentTab].body}
+              value={profiles[currentTab].profileBody}
               onChange={(e) => updateTabContent(currentTab, e.target.value)}
-              disabled={currentTab === 0}
+              // disabled={currentTab === 0}
               autoResize
             />
             <div className="flex justify-end gap-2 mt-2">

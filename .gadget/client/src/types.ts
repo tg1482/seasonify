@@ -394,8 +394,11 @@ export interface ShopProductProfileSort {
   /** Sort the results by the endDate field. Defaults to ascending (smallest value first). */
   endDate?: SortOrder | null;
 
-  /** Sort the results by the body field. Defaults to ascending (smallest value first). */
-  body?: SortOrder | null;
+  /** Sort the results by the profileBody field. Defaults to ascending (smallest value first). */
+  profileBody?: SortOrder | null;
+
+  /** Sort the results by the live field. Defaults to ascending (smallest value first). */
+  live?: SortOrder | null;
 };
 
 
@@ -428,7 +431,9 @@ export interface ShopProductProfileFilter {
 
   endDate?: DateFilter | null;
 
-  body?: StringFilter | null;
+  profileBody?: StringFilter | null;
+
+  live?: BooleanFilter | null;
 };
 
 
@@ -1053,7 +1058,9 @@ export interface NestedShopProductProfileCreateInput {
 
   endDate?: Date | Scalars['ISO8601DateString'] | null;
 
-  body?: (Scalars['String'] | null) | null;
+  profileBody?: (Scalars['String'] | null) | null;
+
+  live?: (Scalars['Boolean'] | null) | null;
 };
 
 
@@ -1139,7 +1146,9 @@ export interface NestedShopProductProfileUpdateInput {
 
   endDate?: Date | Scalars['ISO8601DateString'] | null;
 
-  body?: (Scalars['String'] | null) | null;
+  profileBody?: (Scalars['String'] | null) | null;
+
+  live?: (Scalars['Boolean'] | null) | null;
 
   id: (Scalars['GadgetID'] | null);
 };
@@ -1182,7 +1191,9 @@ export interface ConvergeShopProductProfileValues {
 
   endDate?: Date | Scalars['ISO8601DateString'] | null;
 
-  body?: (Scalars['String'] | null) | null;
+  profileBody?: (Scalars['String'] | null) | null;
+
+  live?: (Scalars['Boolean'] | null) | null;
 };
 
 
@@ -1234,7 +1245,9 @@ export interface CreateShopProductProfileInput {
 
   endDate?: Date | Scalars['ISO8601DateString'] | null;
 
-  body?: (Scalars['String'] | null) | null;
+  profileBody?: (Scalars['String'] | null) | null;
+
+  live?: (Scalars['Boolean'] | null) | null;
 };
 
 
@@ -1255,7 +1268,9 @@ export interface UpdateShopProductProfileInput {
 
   endDate?: Date | Scalars['ISO8601DateString'] | null;
 
-  body?: (Scalars['String'] | null) | null;
+  profileBody?: (Scalars['String'] | null) | null;
+
+  live?: (Scalars['Boolean'] | null) | null;
 };
 
 
@@ -1638,7 +1653,9 @@ export interface InternalShopProductProfileInput {
 
   endDate?: Date | Scalars['ISO8601DateString'] | null;
 
-  body?: (Scalars['String'] | null) | null;
+  profileBody?: (Scalars['String'] | null) | null;
+
+  live?: (Scalars['Boolean'] | null) | null;
 };
 
 
@@ -3196,7 +3213,9 @@ export interface ShopProductProfile {
 
   endDate: (Scalars['Date'] | null);
 
-  body: (Scalars['String'] | null);
+  profileBody: (Scalars['String'] | null);
+
+  live: (Scalars['Boolean'] | null);
 
   /** Get all the fields for this record. Useful for not having to list out all the fields you want to retrieve, but slower. */
   _all: Scalars['JSONObject'];
@@ -3237,7 +3256,9 @@ export type AvailableShopProductProfileSelection = {
 
   endDate?: boolean | null | undefined;
 
-  body?: boolean | null | undefined;
+  profileBody?: boolean | null | undefined;
+
+  live?: boolean | null | undefined;
 
   /** Get all the fields for this record. Useful for not having to list out all the fields you want to retrieve, but slower. */
   _all?: boolean | null | undefined;
@@ -4141,6 +4162,8 @@ export interface Mutation {
 
   globalShopifySync: (GlobalShopifySyncResult | null);
 
+  dailyCronProfileUpdate: (DailyCronProfileUpdateResult | null);
+
   internal: (InternalMutations | null);
 };
 
@@ -4173,6 +4196,8 @@ export type AvailableMutationSelection = {
   bulkDeleteShopProductProfiles?: AvailableBulkDeleteShopProductProfilesResultSelection;
 
   globalShopifySync?: AvailableGlobalShopifySyncResultSelection;
+
+  dailyCronProfileUpdate?: AvailableDailyCronProfileUpdateResultSelection;
 
   internal?: AvailableInternalMutationsSelection;
 };
@@ -4463,6 +4488,32 @@ export interface GlobalShopifySyncResult {
 
 
 export type AvailableGlobalShopifySyncResultSelection = {
+
+  __typename?: boolean | null | undefined;
+
+  success?: boolean | null | undefined;
+
+  errors?: AvailableExecutionErrorSelection;
+
+  result?: boolean | null | undefined;
+};
+
+
+
+export interface DailyCronProfileUpdateResult {
+
+  __typename: 'DailyCronProfileUpdateResult';
+
+  success: Scalars['Boolean'];
+
+  errors: ExecutionError[];
+
+  result: (Scalars['JSON'] | null);
+};
+
+
+
+export type AvailableDailyCronProfileUpdateResultSelection = {
 
   __typename?: boolean | null | undefined;
 

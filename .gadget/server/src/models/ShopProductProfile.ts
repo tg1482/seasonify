@@ -28,7 +28,9 @@ export type DefaultShopProductProfileServerSelection = {
    
     readonly endDate: true;
    
-    readonly body: true;
+    readonly profileBody: true;
+   
+    readonly live: true;
   };
 
   /** All the data passed to an effect or precondition within the `create` action on the `shopProductProfile` model. */

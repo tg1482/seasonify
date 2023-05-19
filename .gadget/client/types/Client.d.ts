@@ -60,6 +60,15 @@ export declare class Client implements AnyClient {
         variablesType: Record<string, never>;
         variables: {};
     };
+    /** Executes the dailyCronProfileUpdate global action. */
+    dailyCronProfileUpdate: {
+        (): Promise<any>;
+        type: "globalAction";
+        operationName: "dailyCronProfileUpdate";
+        namespace: null;
+        variablesType: Record<string, never>;
+        variables: {};
+    };
     /** Run an arbitrary GraphQL query. */
     query(graphQL: string | DocumentNode, variables?: Record<string, any>, options?: Partial<OperationContext>): Promise<any>;
     /** Run an arbitrary GraphQL mutation. */

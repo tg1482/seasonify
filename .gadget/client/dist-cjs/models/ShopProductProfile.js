@@ -52,7 +52,8 @@ const DefaultShopProductProfileSelection = {
   "active": true,
   "startDate": true,
   "endDate": true,
-  "body": true
+  "profileBody": true,
+  "live": true
 };
 ;
 ;
