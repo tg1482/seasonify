@@ -45,6 +45,7 @@ const combinedProductQuery = `
           profileName
           active
           profileBody
+          updatedAt
           live
           shop {
             id
@@ -52,7 +53,6 @@ const combinedProductQuery = `
           product {
             id
             title
-            updatedAt
             images {
               edges {
                 node {
@@ -112,50 +112,15 @@ const ProductPage = () => {
 
   const { edges: profileEdges } = combinedData.shopProductProfiles;
 
-  // Get the product profiles view by compressing the profiles (product-season) into a product-[season] object
-  const productProfiles = profileEdges.reduce((acc, edge) => {
-    // Create a new profile without the product information
-    const { product, ...profile } = edge.node;
-
-    // Use the first image for the product
-    const imageURL = product.images.edges.length > 0 ? product.images.edges[0].node.source : null;
-
-    // Live season info
-    let liveSeason = null;
-    if (profile.live) {
-      liveSeason = {
-        name: profile.season.name,
-        startDate: profile.season.startDate,
-        endDate: profile.season.endDate,
-      };
-    }
-
-    // If the product already exists in the accumulator, just append the profile
-    if (acc[product.id]) {
-      acc[product.id].profiles.push(profile);
-      // If the profile is live, update the live season info
-      if (liveSeason) {
-        acc[product.id].liveSeason = liveSeason;
-      }
-    } else {
-      // Otherwise, create a new entry in the accumulator for the product
-      acc[product.id] = {
-        ...product,
-        imageURL,
-        profiles: [profile],
-        liveSeason,
-      };
-    }
-
-    return acc;
-  }, {});
+  const manager = new ProductProfileManager(profileEdges, api);
+  // manager.refreshAllProductProfiles();
 
   // Massage the data into a format that the data view can use
-  const products = Object.values(productProfiles).map((productData, index) => {
-    const { id, title, updatedAt, profiles, imageURL } = productData;
+  const products = Object.values(manager.productProfiles).map((productData, index) => {
+    const { id, title, profiles, imageURL } = productData;
 
-    // calculate days since last update
-    const daysSinceLastUpdate = Math.floor((new Date() - new Date(updatedAt)) / (1000 * 60 * 60 * 24));
+    // calculate time since last update - hours or days
+    const daysSinceLastUpdate = Math.floor((new Date() - new Date(productData.liveSeason.updatedAt)) / (1000 * 60 * 60 * 24));
 
     // live season info
     const seasonName = productData.liveSeason.name;
@@ -233,13 +198,55 @@ const ProductPage = () => {
       }
     };
 
+    // Seasonify the product by passing profile season, product title, and current profileBody
+    // Wait for the response and then update the profile body
+    // Perform a get call to useFetch("/update/seasonify-product") to refresh the data
+    const seasonifyProduct = async (index) => {
+      const profile = profiles[index];
+      console.log(profile);
+      const seasonName = profile.season.name;
+      const { title } = product;
+      const { body: profileBody } = profile; // Changed 'profileBody' to 'body' as per structure
+
+      try {
+        console.log("Seasonifying product...");
+        const response = await fetch("/update/seasonify-product", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            seasonName,
+            productName: title,
+            productBody: profileBody,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const responseBody = await response.text(); // Fixed the typo here 'resposeBody' to 'responseBody'
+        console.log(responseBody);
+        updateTabContent(index, responseBody); // 'responseBody' instead of 'resposeBody.body'
+        saveTabContent(index);
+
+        // await api.shopProductProfile.update(profile.id, {
+        //   profileBody: responseBody,
+        // });
+        // console.log("Updated successfully");
+      } catch (error) {
+        console.error("Failed to update:", error);
+      }
+    };
+
     return (
       <div className="grid grid-cols-10 gap-2 overflow-x-auto p-4 rounded-xl border-2 border-gray-200 bg-white shadow-lg">
         <div className="col-span-1 flex flex-col items-center justify-center">
           <img src={product.imageURL} alt={product.title} className="w-32 h-32 object-cover border-2 border-dashed border-gray-300" />
         </div>
-        <div className="col-span-2 flex flex-col items-start justify-center gap-2">
-          <div className="text-md font-bold pl-2">{product.title}</div>
+        <div className="col-span-2 flex flex-col items-center justify-center gap-2">
+          <div className="text-md font-bold pl-4">{product.title}</div>
           <div className="flex flex-col rounded-sm bg-red-50 w-max p-2">
             <div className="text-sm text-900">
               {" "}
@@ -278,7 +285,9 @@ const ProductPage = () => {
               <button onClick={() => saveTabContent(currentTab)} className="px-3 py-2 text-white bg-blue-500 rounded text-sm">
                 Save
               </button>
-              <button className="px-3 py-2 text-white bg-green-500 rounded text-sm">Seasonify</button>
+              <button onClick={() => seasonifyProduct(currentTab)} className="px-3 py-2 text-white bg-green-500 rounded text-sm">
+                Seasonify
+              </button>
             </div>
           </div>
         </div>
