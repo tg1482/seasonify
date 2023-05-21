@@ -1,28 +1,8 @@
 import React, { useState } from "react";
-import { useFindFirst, useQuery } from "@gadgetinc/react";
-import {
-  AlphaCard,
-  Banner,
-  FooterHelp,
-  HorizontalStack,
-  Icon,
-  Image,
-  Layout,
-  Link,
-  Page,
-  Spinner,
-  Text,
-  TextField,
-  VerticalStack,
-} from "@shopify/polaris";
-import { StoreMajor } from "@shopify/polaris-icons";
+import { useQuery } from "@gadgetinc/react";
+import { Layout, Page, Spinner, Text } from "@shopify/polaris";
 import { api } from "./api";
-import { Button } from "primereact/button";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
 import { DataView } from "primereact/dataview";
-import { TabView, TabPanel } from "primereact/tabview";
-import { Panel } from "primereact/panel";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { ProductProfileManager } from "../src/productProfileManager";
@@ -112,40 +92,11 @@ const ProductPage = () => {
 
   const { edges: profileEdges } = combinedData.shopProductProfiles;
 
-  const manager = new ProductProfileManager(profileEdges, api);
-  // manager.refreshAllProductProfiles();
+  // Create a manager to help us manage the product profiles
+  const profileManager = new ProductProfileManager(profileEdges, api);
 
-  // Massage the data into a format that the data view can use
-  const products = Object.values(manager.productProfiles).map((productData, index) => {
-    const { id, title, profiles, imageURL } = productData;
-
-    // calculate time since last update - hours or days
-    const daysSinceLastUpdate = Math.floor((new Date() - new Date(productData.liveSeason.updatedAt)) / (1000 * 60 * 60 * 24));
-
-    // live season info
-    const seasonName = productData.liveSeason.name;
-    const seasonStartDate = new Date(productData.liveSeason.startDate).toLocaleDateString(undefined, {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
-    const seasonEndDate = new Date(productData.liveSeason.endDate).toLocaleDateString(undefined, {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
-
-    return {
-      imageURL,
-      id,
-      title,
-      daysSinceLastUpdate,
-      seasonName,
-      seasonStartDate,
-      seasonEndDate,
-      profiles,
-    };
-  });
+  // Format the product data for the view
+  const products = profileManager.formatProductDataForView();
 
   // Function to render the content of tab panel
   const Tab = ({ children, currentTab, setTab, index }) => {
@@ -164,6 +115,7 @@ const ProductPage = () => {
   const itemTemplate = (product) => {
     const liveProfileIndex = product.profiles.findIndex((profile) => profile.live);
     const [currentTab, setTab] = useState(liveProfileIndex !== -1 ? liveProfileIndex : 0);
+    const [seasonifying, setSeasonifying] = useState(false);
 
     const tabs = product.profiles.map((profile, index) => ({
       title: profile.season.name,
@@ -173,7 +125,7 @@ const ProductPage = () => {
     const [profiles, setProfiles] = useState(product.profiles);
 
     // Update the profile body when the tab content changes
-    const updateTabContent = (index, newContent) => {
+    const updateTabContent = async (index, newContent) => {
       setProfiles((prevProfiles) =>
         prevProfiles.map((profile, profileIndex) => {
           if (profileIndex === index) {
@@ -206,10 +158,11 @@ const ProductPage = () => {
       console.log(profile);
       const seasonName = profile.season.name;
       const { title } = product;
-      const { body: profileBody } = profile; // Changed 'profileBody' to 'body' as per structure
+      const { profileBody } = profile;
 
       try {
         console.log("Seasonifying product...");
+        setSeasonifying(true);
         const response = await fetch("/update/seasonify-product", {
           method: "POST",
           headers: {
@@ -226,15 +179,12 @@ const ProductPage = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const responseBody = await response.text(); // Fixed the typo here 'resposeBody' to 'responseBody'
-        console.log(responseBody);
-        updateTabContent(index, responseBody); // 'responseBody' instead of 'resposeBody.body'
-        saveTabContent(index);
+        let responseBody = await response.text();
+        responseBody = responseBody.trim().replace(/^\n/, "");
 
-        // await api.shopProductProfile.update(profile.id, {
-        //   profileBody: responseBody,
-        // });
-        // console.log("Updated successfully");
+        await updateTabContent(index, responseBody);
+        setSeasonifying(false);
+        await saveTabContent(index);
       } catch (error) {
         console.error("Failed to update:", error);
       }
@@ -285,8 +235,12 @@ const ProductPage = () => {
               <button onClick={() => saveTabContent(currentTab)} className="px-3 py-2 text-white bg-blue-500 rounded text-sm">
                 Save
               </button>
-              <button onClick={() => seasonifyProduct(currentTab)} className="px-3 py-2 text-white bg-green-500 rounded text-sm">
-                Seasonify
+              <button
+                disabled={seasonifying}
+                onClick={() => seasonifyProduct(currentTab)}
+                className={`px-3 py-2 text-white bg-green-500 rounded text-sm` + (seasonifying ? " bg-transparent border-solid" : "")}
+              >
+                {seasonifying ? <Spinner accessibilityLabel="Spinner" size="small" /> : "Seasonify"}
               </button>
             </div>
           </div>

@@ -19,9 +19,9 @@ export default async ({ api, reply, request, logger, connections }) => {
   try {
     const completion = await openai.createCompletion({
       model: "text-davinci-002",
-      prompt: `This is a Shopify product titled "${productName}" with  description: ${productBody}. Modify the description to market the product exclusively during ${seasonName} to potential buyers. Use text speaking to the buyer, include a sentance with made up facts that will impress them, and two scenarios of why they would want to own this product. Return the new description with HTML markup <p> for paragraphs and <br> for line breaks. No extra spaces before or after the text. It should be well formatted. Use at most 200 words.`,
+      prompt: `This is a Shopify product titled "${productName}" with description: ${productBody}. Update the description to market the product exclusively during ${seasonName} season to potential buyers. Keep an enthusiastic tone, talk about the product in detail, and two scenarios of why they would want to own this product. Return the new description with HTML markup <p> for paragraphs and <br> for line breaks. It should be well formatted. Use at least 200 words.`,
       temperature: 0,
-      max_tokens: 250,
+      max_tokens: 300,
       top_p: 1,
       frequency_penalty: 0.0,
       presence_penalty: 0.0,

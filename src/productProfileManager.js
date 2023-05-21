@@ -5,11 +5,13 @@ export class ProductProfileManager {
   }
 
   transformProfileData(profileEdges) {
+    // Currently used on the product profile page.
+
     return profileEdges.reduce((acc, edge) => {
       const { product, ...profile } = edge.node;
-      const imageURL = product.images.edges.length > 0 ? product.images.edges[0].node.source : null;
 
       let liveSeason = null;
+      let imageURL = null;
       if (profile.live) {
         liveSeason = {
           name: profile.season.name,
@@ -17,6 +19,7 @@ export class ProductProfileManager {
           endDate: new Date(profile.season.endDate),
           updatedAt: new Date(profile.updatedAt),
         };
+        imageURL = product.images.edges.length > 0 ? product.images.edges[0].node.source : null;
       }
 
       profile.season.startDate = new Date(profile.season.startDate);
@@ -26,6 +29,7 @@ export class ProductProfileManager {
         acc[product.id].profiles.push(profile);
         if (liveSeason) {
           acc[product.id].liveSeason = liveSeason;
+          acc[product.id].imageURL = imageURL;
         }
       } else {
         acc[product.id] = {
@@ -38,6 +42,39 @@ export class ProductProfileManager {
 
       return acc;
     }, {});
+  }
+
+  formatProductDataForView() {
+    // Currently used on the product profile page.
+
+    return Object.values(this.productProfiles).map((productData, index) => {
+      const { id, title, profiles, imageURL } = productData;
+
+      const daysSinceLastUpdate = Math.floor((new Date() - new Date(productData.liveSeason.updatedAt)) / (1000 * 60 * 60 * 24));
+
+      const seasonName = productData.liveSeason.name;
+      const seasonStartDate = new Date(productData.liveSeason.startDate).toLocaleDateString(undefined, {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
+      const seasonEndDate = new Date(productData.liveSeason.endDate).toLocaleDateString(undefined, {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
+
+      return {
+        imageURL,
+        id,
+        title,
+        daysSinceLastUpdate,
+        seasonName,
+        seasonStartDate,
+        seasonEndDate,
+        profiles,
+      };
+    });
   }
 
   updateDatesForNewYear() {
